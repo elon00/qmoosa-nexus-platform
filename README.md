@@ -18,3 +18,4 @@ View your app in AI Studio: https://ai.studio/apps/8c0c4f77-6a4d-481b-b2ec-1521f
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+https://qmoosa-nexus-platform.netlify.app/
