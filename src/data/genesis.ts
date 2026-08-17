@@ -1,6 +1,6 @@
 import { ChainConfig, TokenomicsAllocation, SDKExample, ValidatorNode, AgentWallet, AIModelOption } from '../types';
 
-export const TOTAL_QMS_MAX_SUPPLY = 100_000_000_000_000; // 100 Trillion QMS
+export const TOTAL_QMS_MAX_SUPPLY = 1_000_000_000_000_000; // 1,000 Trillion (1 Quadrillion) QMS
 
 export const AI_MODELS: AIModelOption[] = [
   {
@@ -85,295 +85,317 @@ export const NETWORK_CHAINS: ChainConfig[] = [
   },
   {
     id: 'ethereum',
-    name: 'Ethereum Mainnet',
+    name: 'Ethereum Sepolia',
     symbol: 'ETH',
     type: 'Cross-Chain',
     iconName: 'Layers',
     avgGasUsd: 1.25,
     finalityMs: 12000,
     usdtSupported: true,
-    rpcEndpoint: 'https://eth-mainnet.g.alchemy.com/v2/demo',
+    rpcEndpoint: 'https://rpc.sepolia.org',
   },
   {
     id: 'solana',
-    name: 'Solana',
+    name: 'Solana Devnet',
     symbol: 'SOL',
     type: 'Cross-Chain',
     iconName: 'Zap',
     avgGasUsd: 0.00025,
     finalityMs: 400,
     usdtSupported: true,
-    rpcEndpoint: 'https://api.mainnet-beta.solana.com',
+    rpcEndpoint: 'https://api.devnet.solana.com',
   },
   {
     id: 'base',
-    name: 'Base L2',
+    name: 'Base Sepolia',
     symbol: 'ETH',
     type: 'L2',
     iconName: 'Shield',
-    avgGasUsd: 0.005,
-    finalityMs: 1500,
+    avgGasUsd: 0.001,
+    finalityMs: 2000,
     usdtSupported: true,
-    rpcEndpoint: 'https://mainnet.base.org',
+    rpcEndpoint: 'https://sepolia.base.org',
   },
   {
     id: 'polygon',
-    name: 'Polygon PoS',
+    name: 'Polygon Amoy',
     symbol: 'POL',
-    type: 'Cross-Chain',
-    iconName: 'Globe',
-    avgGasUsd: 0.01,
+    type: 'L2',
+    iconName: 'Activity',
+    avgGasUsd: 0.005,
     finalityMs: 2000,
     usdtSupported: true,
-    rpcEndpoint: 'https://polygon-rpc.com',
-  },
-  {
-    id: 'bnb',
-    name: 'BNB Smart Chain',
-    symbol: 'BNB',
-    type: 'Cross-Chain',
-    iconName: 'Coins',
-    avgGasUsd: 0.03,
-    finalityMs: 3000,
-    usdtSupported: true,
-    rpcEndpoint: 'https://bsc-dataseed.binance.org',
+    rpcEndpoint: 'https://rpc-amoy.polygon.technology',
   },
   {
     id: 'arbitrum',
-    name: 'Arbitrum One',
+    name: 'Arbitrum Sepolia',
     symbol: 'ETH',
     type: 'L2',
-    iconName: 'TrendingUp',
-    avgGasUsd: 0.02,
-    finalityMs: 1000,
+    iconName: 'RefreshCw',
+    avgGasUsd: 0.002,
+    finalityMs: 1500,
     usdtSupported: true,
-    rpcEndpoint: 'https://arb1.arbitrum.io/rpc',
+    rpcEndpoint: 'https://sepolia-rollup.arbitrum.io/rpc',
+  },
+  {
+    id: 'bnb',
+    name: 'BNB Smart Chain Testnet',
+    symbol: 'BNB',
+    type: 'Cross-Chain',
+    iconName: 'Droplet',
+    avgGasUsd: 0.02,
+    finalityMs: 3000,
+    usdtSupported: true,
+    rpcEndpoint: 'https://data-seed-prebsc-1-s1.binance.org:8545',
   },
 ];
 
 export const TOKENOMICS_ALLOCATION: TokenomicsAllocation[] = [
   {
-    category: 'Ecosystem & User Incentives',
-    percentage: 35,
-    amountQms: 35_000_000_000_000,
-    description: 'Community grants, user dApp rewards, cross-chain liquidity mining & testnet rewards.',
-    color: 'bg-emerald-500',
-  },
-  {
-    category: 'Agentic AI Compute & Network Protocol',
-    percentage: 25,
-    amountQms: 25_000_000_000_000,
-    description: 'Autonomous Agent execution subsidies, proof verification nodes, & AI model inference pools.',
+    category: 'Ecosystem & Autonomous Agent Economy',
+    percentage: 35.0,
+    amountQms: 350_000_000_000_000,
+    description: 'Funding AI agent developers, on-chain autonomous liquidity bots, and autonomous Web 4.0 applications.',
     color: 'bg-cyan-500',
   },
   {
-    category: 'Validator Staking & Consensus Security',
-    percentage: 15,
-    amountQms: 15_000_000_000_000,
-    description: 'Block reward pool for PoS + BFT validators and ZK-rollups provers.',
+    category: 'Proof-of-Useful-Compute Staking Rewards',
+    percentage: 25.0,
+    amountQms: 250_000_000_000_000,
+    description: 'Continuous block rewards for high-performance GPU validator nodes executing AI inference and state proofs.',
+    color: 'bg-emerald-500',
+  },
+  {
+    category: 'Public Liquidity & Global Market Making',
+    percentage: 15.0,
+    amountQms: 150_000_000_000_000,
+    description: 'Initial DEX/CEX liquidity pools paired against USDT, USDC, ETH, and SOL across global Tier-1 exchanges.',
     color: 'bg-purple-500',
   },
   {
-    category: 'Developer Foundation & Core R&D',
-    percentage: 10,
-    amountQms: 10_000_000_000_000,
-    description: 'Open-source SDKs, smart contract security audits, compiler tooling, and core node engineering.',
-    color: 'bg-blue-500',
-  },
-  {
-    category: 'Protocol Treasury',
-    percentage: 10,
-    amountQms: 10_000_000_000_000,
-    description: 'DAO governed reserve for strategic multi-chain expansion and emergency liquidity.',
+    category: 'Community Fair Launchpad & Airdrop Quests',
+    percentage: 10.0,
+    amountQms: 100_000_000_000_000,
+    description: 'Community airdrops, hackathon grants, viral referral quests, and early testnet ecosystem participants.',
     color: 'bg-amber-500',
   },
   {
-    category: 'Team & Early Contributors',
-    percentage: 5,
-    amountQms: 5_000_000_000_000,
-    description: '4-year linear vesting with 1-year cliff for core builders.',
-    color: 'bg-slate-500',
-  },
-];
-
-export const DEFAULT_VALIDATORS: ValidatorNode[] = [
-  {
-    id: 'val-1',
-    name: 'Nexus Alpha Node (Frankfurt)',
-    address: '0xqms...val1001',
-    region: 'EU-Central',
-    stakedQms: 2_500_000_000_000,
-    status: 'active',
-    blocksProposed: 14820,
-    uptimePercentage: 99.98,
+    category: 'Core Protocol Engineering & Security Reserve',
+    percentage: 10.0,
+    amountQms: 100_000_000_000_000,
+    description: '48-month linear vesting for core cryptographic researchers, formal verification bounties, and emergency fund.',
+    color: 'bg-blue-500',
   },
   {
-    id: 'val-2',
-    name: 'Singapore Agentic Sentinel',
-    address: '0xqms...val1002',
-    region: 'AP-Southeast',
-    stakedQms: 1_800_000_000_000,
-    status: 'active',
-    blocksProposed: 12450,
-    uptimePercentage: 99.95,
-  },
-  {
-    id: 'val-3',
-    name: 'US-East Parallel VM Prover',
-    address: '0xqms...val1003',
-    region: 'US-East',
-    stakedQms: 3_100_000_000_000,
-    status: 'active',
-    blocksProposed: 19800,
-    uptimePercentage: 100.0,
-  },
-  {
-    id: 'val-4',
-    name: 'Tokyo ZK Proof Validator',
-    address: '0xqms...val1004',
-    region: 'AP-Northeast',
-    stakedQms: 1_200_000_000_000,
-    status: 'active',
-    blocksProposed: 9310,
-    uptimePercentage: 99.91,
+    category: 'Strategic Global Institutional Backing',
+    percentage: 5.0,
+    amountQms: 50_000_000_000_000,
+    description: 'Long-term strategic ecosystem partners and sovereign infrastructure funds with 36-month lockups.',
+    color: 'bg-rose-500',
   },
 ];
 
 export const DEFAULT_AGENT_WALLETS: AgentWallet[] = [
   {
-    id: 'ag-wallet-1',
-    name: 'Shopping & Yield Agent Wallet',
+    id: 'wallet-01',
+    name: 'Shopping & Travel Agent',
     address: '0xNexusAgent_8a1f9e2b03c4',
-    qmsBalance: 50_000_000,
-    usdtBalance: 1_250.0,
-    smartAccountType: 'Nexus-Native',
+    qmsBalance: 15_000_000.0,
+    usdtBalance: 75.5,
+    smartAccountType: 'ERC-4337',
     policy: {
       maxDailySpendingUsdt: 100.0,
       usedTodayUsdt: 24.5,
       maxPerTxUsdt: 50.0,
       allowedChains: ['qmoosa', 'solana', 'ethereum', 'base', 'polygon'],
-      allowedContracts: [
-        '0xContract_DeFi_Router_01',
-        '0xContract_USDT_Bridge_02',
-        '0xContract_Shopping_Escrow',
-      ],
+      allowedContracts: ['0xContract_DeFi_Router_01', '0xContract_Shop_Merchant'],
       requireHumanApprovalAboveUsdt: 75.0,
       riskScoreThreshold: 35,
-      timeLimitWindowMinutes: 60,
+      timeLimitWindowMinutes: 1440,
       emergencyPauseActive: false,
     },
     createdTimestamp: Date.now() - 86400000 * 3,
   },
   {
-    id: 'ag-wallet-2',
-    name: 'Cross-Chain Arbitrage Bot',
-    address: '0xNexusAgent_3c9d7e1f4a5b',
-    qmsBalance: 250_000_000,
-    usdtBalance: 5_000.0,
+    id: 'wallet-02',
+    name: 'Multi-Chain DeFi Arbitrageur',
+    address: '0xNexusAgent_4b2c1f9e8a00',
+    qmsBalance: 500_000_000.0,
+    usdtBalance: 500.0,
     smartAccountType: 'ERC-4337',
     policy: {
-      maxDailySpendingUsdt: 500.0,
+      maxDailySpendingUsdt: 1000.0,
       usedTodayUsdt: 120.0,
-      maxPerTxUsdt: 200.0,
-      allowedChains: ['qmoosa', 'arbitrum', 'polygon', 'bnb'],
-      allowedContracts: ['0xDex_Router_Aggregator', '0xBridge_Vault_01'],
-      requireHumanApprovalAboveUsdt: 300.0,
-      riskScoreThreshold: 50,
-      timeLimitWindowMinutes: 120,
+      maxPerTxUsdt: 250.0,
+      allowedChains: ['qmoosa', 'solana', 'ethereum', 'base', 'arbitrum'],
+      allowedContracts: ['0xContract_UniSwap_V3', '0xContract_Raydium_Solana'],
+      requireHumanApprovalAboveUsdt: 500.0,
+      riskScoreThreshold: 60,
+      timeLimitWindowMinutes: 1440,
       emergencyPauseActive: false,
     },
     createdTimestamp: Date.now() - 86400000 * 7,
+  },
+  {
+    id: 'wallet-03',
+    name: 'Quantum PQC Safe Vault',
+    address: '0xNexusVault_pqc99881122',
+    qmsBalance: 1_250_000_000.0,
+    usdtBalance: 2500.0,
+    smartAccountType: 'Nexus-Native',
+    policy: {
+      maxDailySpendingUsdt: 5000.0,
+      usedTodayUsdt: 0.0,
+      maxPerTxUsdt: 1000.0,
+      allowedChains: ['qmoosa', 'ethereum', 'solana'],
+      allowedContracts: ['0xZK_Prover_Vault'],
+      requireHumanApprovalAboveUsdt: 1000.0,
+      riskScoreThreshold: 20,
+      timeLimitWindowMinutes: 1440,
+      emergencyPauseActive: false,
+    },
+    createdTimestamp: Date.now() - 86400000 * 12,
+  },
+];
+
+export const DEFAULT_VALIDATORS: ValidatorNode[] = [
+  {
+    id: 'val-01',
+    name: 'US-East Parallel GPU Prover (NVIDIA H100)',
+    address: '0xqms...val1001',
+    region: 'North America (Virginia)',
+    stakedQms: 250_000_000_000,
+    status: 'active',
+    blocksProposed: 14820,
+    uptimePercentage: 99.99,
+  },
+  {
+    id: 'val-02',
+    name: 'EU-Central ZK Inference Cluster',
+    address: '0xqms...val1002',
+    region: 'Europe (Frankfurt)',
+    stakedQms: 180_000_000_000,
+    status: 'active',
+    blocksProposed: 12450,
+    uptimePercentage: 99.98,
+  },
+  {
+    id: 'val-03',
+    name: 'Asia-East Quantum Relay Sentinel',
+    address: '0xqms...val1003',
+    region: 'Asia-Pacific (Tokyo)',
+    stakedQms: 195_000_000_000,
+    status: 'active',
+    blocksProposed: 13910,
+    uptimePercentage: 100.0,
+  },
+  {
+    id: 'val-04',
+    name: 'MEA Middle East Sovereign Node',
+    address: '0xqms...val1004',
+    region: 'Middle East (Dubai VARA Hub)',
+    stakedQms: 120_000_000_000,
+    status: 'active',
+    blocksProposed: 9840,
+    uptimePercentage: 99.95,
   },
 ];
 
 export const SDK_EXAMPLES: SDKExample[] = [
   {
-    id: 'ts-agent-create',
-    title: 'TypeScript: Create Agent & Spending Limits',
+    id: 'ts-agent-deploy',
+    title: 'Deploy Autonomous Agent with Policy Limits',
     language: 'typescript',
-    description: 'Initialize a autonomous AI Agent with strict spending controls and Smart Account permissions.',
-    code: `import { QMoosaSDK } from '@qmoosa/nexus-sdk';
+    description: 'Initialize an AI Agent with smart account session keys and spending guardian rules.',
+    code: `import { QMoosaAgent, PolicyGuardian, Network } from '@qmoosa/nexus-sdk';
 
-const sdk = new QMoosaSDK({
-  network: 'testnet',
-  rpcUrl: 'https://rpc.testnet.qmoosa.nexus'
-});
+async function main() {
+  // 1. Initialize QMoosa Nexus client
+  const client = new QMoosaAgent({
+    network: Network.TESTNET,
+    rpcUrl: 'https://rpc.testnet.qmoosa.nexus',
+    aiModel: 'auto', // Google Gemini + DeepSeek Hybrid
+  });
 
-// 1. Define Agent Spending Policy
-const policy = sdk.createPolicy({
-  maxDailySpendingUsdt: 100.0,
-  maxPerTxUsdt: 50.0,
-  allowedTokens: ['USDT', 'QMS'],
-  allowedChains: ['qmoosa', 'solana', 'ethereum'],
-  requireHumanApprovalAboveUsdt: 75.0,
-  emergencyPause: false
-});
+  // 2. Configure deterministic Spending Policy Guardian
+  const policy = await PolicyGuardian.create({
+    maxDailySpendUsdt: 100.0,
+    maxPerTxUsdt: 50.0,
+    allowedChains: ['qmoosa', 'ethereum', 'solana', 'base'],
+    requireHumanApprovalAboveUsdt: 75.0,
+    riskThreshold: 35, // 0-100 max acceptable risk
+    emergencyPause: false,
+  });
 
-// 2. Spawn Smart Account Agent Wallet
-const agent = await sdk.createAgent({
-  name: "ShoppingAssistantAgent",
-  policy: policy,
-  accountType: "Nexus-Native"
-});
+  console.log('✅ Agent Smart Account Active:', policy.accountAddress);
 
-console.log("Agent Address:", agent.address);
-console.log("Daily Limit Remaining:", agent.getRemainingAllowance());
-`,
+  // 3. Prompt Agent for Autonomous Execution
+  const plan = await client.planAndExecute({
+    prompt: 'Find best USDT yield on Solana and allocate 20 USDT with max 0.1% slippage',
+    policy,
+  });
+
+  console.log('🚀 Transaction Hash:', plan.txHash);
+}
+
+main().catch(console.error);`,
   },
   {
-    id: 'py-agent-task',
-    title: 'Python: Natural Language On-Chain Task',
+    id: 'py-arbitrage-bot',
+    title: 'Python Multi-Chain ZK Arbitrageur',
     language: 'python',
-    description: 'Execute natural language tasks through QMoosa AI reasoning engine with automatic transaction simulation.',
-    code: `from qmoosa import QMoosaClient, AgentPolicy
+    description: 'Monitor cross-chain DEX price disparities with sub-second parallel simulation.',
+    code: `from qmoosa import NexusClient, PolicyEngine, ChainTarget
+import asyncio
 
-client = QMoosaClient(network="testnet")
+async def run_arbitrage():
+    client = NexusClient(rpc_url="https://rpc.testnet.qmoosa.nexus")
+    
+    # Subscribe to real-time price feeds across EVM & Solana
+    prices = await client.get_cross_chain_liquidity(
+        token_pair="USDT/QMS",
+        chains=[ChainTarget.QMOOSA, ChainTarget.ETHEREUM, ChainTarget.SOLANA]
+    )
+    
+    print(f"[*] Optimal Route Identified: {prices.best_route}")
+    
+    # Execute atomic cross-chain swap with ZK proof
+    tx = await client.execute_atomic_swap(
+        amount_usdt=50.0,
+        source_chain=ChainTarget.ETHEREUM,
+        dest_chain=ChainTarget.QMOOSA,
+        zk_snark_proof=True
+    )
+    print(f"[+] ZK Proof Hash: {tx.zk_proof_hash}")
 
-# Initialize agent with policy
-agent = client.get_agent(name="ShoppingAssistantAgent")
-
-# Execute reasoning and plan
-plan = agent.plan_execution(
-    prompt="Find best route to swap 20 USDT for QMS on QMoosa L1 with lowest slippage"
-)
-
-print(f"Confidence Score: {plan.confidence}%")
-print(f"Risk Score: {plan.risk_score}/100")
-
-if plan.policy_approved:
-    receipt = agent.execute_plan(plan)
-    print("Execution Success! Tx Hash:", receipt.tx_hash)
-else:
-    print("Policy Rejected:", plan.violations)
-`,
+if __name__ == "__main__":
+    asyncio.run(run_arbitrage())`,
   },
   {
-    id: 'rust-cross-chain',
-    title: 'Rust: Cross-Chain USDT Bridge & Verification',
+    id: 'rust-pqc-guardian',
+    title: 'Rust PQC Lattice-State Guardian',
     language: 'rust',
-    description: 'Perform ZK-proof verified cross-chain transfers between QMoosa L1, Ethereum, and Solana.',
-    code: `use qmoosa_nexus_sdk::{QMoosaClient, ChainId, CrossChainRequest};
+    description: 'Post-quantum ML-DSA / Kyber signature validation on Solana / QMoosa VM.',
+    code: `use qmoosa_sdk::prelude::*;
+use qmoosa_pqc::mldsa::{MlDsa65KeyPair, verify_signature};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let client = QMoosaClient::new("https://rpc.testnet.qmoosa.nexus");
-
-    let bridge_tx = CrossChainRequest {
-        source_chain: ChainId::Ethereum,
-        destination_chain: ChainId::QMoosaL1,
-        amount_usdt: 100.0,
-        recipient_agent: "0xNexusAgent_8a1f9e2b03c4",
-        include_zk_proof: true,
-    };
-
-    let quote = client.get_bridge_quote(&bridge_tx).await?;
-    println!("Estimated Gas Fee: \${:.4}", quote.estimated_gas_usd);
-
-    let result = client.execute_cross_chain(bridge_tx, quote).await?;
-    println!("Bridge Success! ZK Proof Hash: {}", result.zk_proof_hash);
-
+    let client = NexusClient::connect("https://rpc.testnet.qmoosa.nexus").await?;
+    
+    // Generate NIST FIPS 204 ML-DSA-65 Quantum-Safe Keypair
+    let keypair = MlDsa65KeyPair::generate();
+    println!("🔑 PQC Public Key: 0x{}", hex::encode(keypair.public_key_bytes()));
+    
+    // Sign payload with Post-Quantum Lattice Signature
+    let payload = b"Transfer 1000 QMS to 0xUser_Vault_9988";
+    let pqc_sig = keypair.sign(payload);
+    
+    let is_valid = verify_signature(&keypair.public_key_bytes(), payload, &pqc_sig);
+    println!("🛡 PQC Verification Status: {}", is_valid);
+    
     Ok(())
-}
-`,
+}`,
   },
 ];

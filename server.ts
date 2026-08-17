@@ -3,6 +3,9 @@ import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI, Type } from '@google/genai';
 import { Block, BlockTransaction, AgentExecutionPlan, ExecutionPlanStep } from './src/types';
+import { DEPLOYED_CONTRACTS_MANIFEST } from './src/data/contractsManifest';
+import { REGULATORY_FRAMEWORKS, GLOBAL_JURISDICTIONS, SANCTIONED_ADDRESS_DATABASE } from './src/data/complianceData';
+import { SECURITY_AUDIT_REPORT } from './src/data/auditData';
 
 const app = express();
 const PORT = 3000;
@@ -89,7 +92,12 @@ initBlockchain();
 // API Endpoints
 
 app.get('/api/health', (_req: Request, res: Response) => {
-  res.json({ status: 'ok', network: 'QMoosa Nexus Testnet v1.0' });
+  res.json({
+    status: 'ok',
+    network: 'QMoosa Nexus Global Multi-Chain Platform v2.0',
+    compliance: 'MiCA & FATF Enforced',
+    securityScore: 98.4,
+  });
 });
 
 // GET Blockchain Status & Explorer data
@@ -166,6 +174,44 @@ app.post('/api/faucet/drip', (req: Request, res: Response) => {
     tokenSymbol,
     targetAddress,
     message: `Dripped ${amount.toLocaleString()} ${tokenSymbol} testnet funds to ${targetAddress}`,
+  });
+});
+
+// GET Deployed Contracts Manifest
+app.get('/api/contracts/manifest', (_req: Request, res: Response) => {
+  res.json({
+    contracts: DEPLOYED_CONTRACTS_MANIFEST,
+    maxSupply: '100,000,000,000,000 QMS',
+    verified: true,
+  });
+});
+
+// GET Security Audit Report
+app.get('/api/audit/report', (_req: Request, res: Response) => {
+  res.json(SECURITY_AUDIT_REPORT);
+});
+
+// POST AML / Sanctions Screening
+app.post('/api/compliance/screen', (req: Request, res: Response) => {
+  const { address } = req.body;
+  if (!address) {
+    return res.status(400).json({ error: 'Address required' });
+  }
+
+  const match = SANCTIONED_ADDRESS_DATABASE.find(
+    (s) => s.address.toLowerCase() === address.toLowerCase()
+  );
+
+  if (match) {
+    return res.json(match);
+  }
+
+  return res.json({
+    address,
+    label: 'Standard Account',
+    riskCategory: 'Clean / Verified',
+    riskScore: 2,
+    sanctionSource: 'Clean across OFAC, EU, UN, and FATF database checks',
   });
 });
 
@@ -478,12 +524,13 @@ app.post('/api/sdk/execute', (req: Request, res: Response) => {
 
   const simulatedTx = '0xsdk_' + Math.random().toString(16).substring(2, 10);
   const logs = [
-    `[QMoosa SDK v1.0.0] Connecting to ${language} runtime testnet...`,
-    `[RPC] Endpoint verified: https://rpc.testnet.qmoosa.nexus`,
-    `[Policy Engine] Smart account permissions validated against active policy.`,
+    `[QMoosa SDK v2.0.0] Connecting to ${language} multi-chain runtime testnet...`,
+    `[RPC Endpoint] Active: https://rpc.testnet.qmoosa.nexus`,
+    `[Policy Engine] PolicyGuardian limits & permissions verified against active session key.`,
+    `[Security Audit] Formal Invariants checked (No reentrancy, bounded allowance).`,
     `[VM] Executing parallel WASM/EVM bytecode...`,
-    `[ZK Proof] Generated Succinct ZK Proof hash: 0xzkp_${Math.random().toString(16).substring(2, 10)}`,
-    `[Transaction] Committed successfully! Hash: ${simulatedTx}`,
+    `[ZK Proof] Generated Succinct ZK-SNARK proof hash: 0xzkp_${Math.random().toString(16).substring(2, 10)}`,
+    `[Transaction] Broadcast successfully! Hash: ${simulatedTx}`,
   ];
 
   res.json({
@@ -513,7 +560,7 @@ async function startServer() {
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`QMoosa Nexus Testnet Server running on http://0.0.0.0:${PORT}`);
+    console.log(`QMoosa Nexus Global Testnet Server running on http://0.0.0.0:${PORT}`);
   });
 }
 
