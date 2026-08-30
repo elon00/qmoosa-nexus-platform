@@ -95,8 +95,9 @@ app.get('/api/health', (_req: Request, res: Response) => {
   res.json({
     status: 'ok',
     network: 'QMoosa Nexus Global Multi-Chain Platform v2.0',
-    compliance: 'MiCA & FATF Enforced',
-    securityScore: 98.4,
+    compliance: 'NOT INDEPENDENTLY CERTIFIED',
+    securityScore: null,
+    statusNote: 'This prototype health endpoint does not certify legal compliance or an external security audit.',
   });
 });
 
@@ -104,10 +105,10 @@ app.get('/api/health', (_req: Request, res: Response) => {
 app.get('/api/blockchain/status', (_req: Request, res: Response) => {
   res.json({
     blockHeight: currentBlockHeight,
-    tps: Math.floor(7500 + Math.random() * 2500),
+    tps: null,
     avgBlockTimeMs: 350,
-    activeValidators: 128,
-    totalStakedQms: 8_600_000_000_000,
+    activeValidators: null,
+    totalStakedQms: null,
     maxSupplyQms: 100_000_000_000_000,
     circulatingSupplyQms: totalQmsCirculating,
     latestBlocks: recentBlocks,
@@ -138,7 +139,7 @@ app.post('/api/blockchain/mine', (_req: Request, res: Response) => {
   recentBlocks.unshift(newBlock);
   if (recentBlocks.length > 20) recentBlocks.pop();
 
-  res.json({ success: true, block: newBlock });
+  res.json({ success: true, simulation: true, statusNote: 'In-memory demonstration block only; no blockchain consensus or on-chain settlement occurred.', block: newBlock });
 });
 
 // POST Faucet Request
@@ -173,7 +174,8 @@ app.post('/api/faucet/drip', (req: Request, res: Response) => {
     amount,
     tokenSymbol,
     targetAddress,
-    message: `Dripped ${amount.toLocaleString()} ${tokenSymbol} testnet funds to ${targetAddress}`,
+    message: `SIMULATION ONLY: queued ${amount.toLocaleString()} ${tokenSymbol} in local in-memory state; no testnet funds were transferred.`,
+    simulation: true,
   });
 });
 
@@ -182,7 +184,8 @@ app.get('/api/contracts/manifest', (_req: Request, res: Response) => {
   res.json({
     contracts: DEPLOYED_CONTRACTS_MANIFEST,
     maxSupply: '100,000,000,000,000 QMS',
-    verified: true,
+    verified: false,
+    verificationStatus: 'Contract addresses require independent explorer and bytecode verification.',
   });
 });
 
