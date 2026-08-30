@@ -1,13 +1,13 @@
 # 🌌 QMoosa Nexus Protocol: Autonomous Web 4.0 Multi-Chain AI Agent Engine
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Security Score](https://img.shields.io/badge/CertiK%20Score-98.4%2F100-brightgreen.svg)]()
-[![MiCA Ready](https://img.shields.io/badge/EU%20MiCA-Compliant-blue.svg)]()
+[![Security Status](https://img.shields.io/badge/Security%20Audit-Not%20Independently%20Verified-lightgrey.svg)]()
+[![Compliance Status](https://img.shields.io/badge/Compliance-Legal%20Review%20Required-lightgrey.svg)]()
 [![PQC Lattice](https://img.shields.io/badge/NIST%20FIPS%20204-ML--DSA-purple.svg)]()
 [![Supply Cap](https://img.shields.io/badge/Total%20Supply-1%2C000%20Trillion%20QMS-cyan.svg)]()
 [![Netlify Status](https://img.shields.io/badge/Netlify-Live%20Deploy-success.svg)]()
 
-> **QMoosa Nexus** is the world’s first autonomous **Web 4.0** execution layer uniting Account Abstraction (ERC-4337), deterministic **Policy Guardians**, **Post-Quantum Lattice Cryptography (NIST FIPS 203/204)**, and **Conway Cellular Automata Emergence** across Ethereum Sepolia, Solana, Base, Polygon Amoy, Arbitrum, BNB Chain, and native QMoosa Parallel L1.
+> **QMoosa Nexus** is a prototype/research Web 4.0 execution platform exploring Account Abstraction (ERC-4337), deterministic **Policy Guardians**, **Post-Quantum Lattice Cryptography (NIST FIPS 203/204)**, and **Conway Cellular Automata Emergence** across Ethereum Sepolia, Solana, Base, Polygon Amoy, Arbitrum, BNB Chain, and native QMoosa Parallel L1.
 
 ---
 
@@ -41,10 +41,10 @@ To ensure multi-decade cryptographic longevity, QMoosa integrated **Post-Quantum
    - Multi-stage autonomous pipeline creator (Triggers ➜ Policy Check ➜ AI Planning ➜ Settlement).
 7. **Token Launchpad (QMoosa Launchpad)**:
    - Fair launch bonding curve engine for autonomous agent utility tokens.
-8. **Global Regulatory & Legal Compliance**:
-   - EU MiCA (2023/1114), FATF Travel Rule, and EU AI Act (2024/1689) audit verified.
-9. **Cross-Chain Succinct ZK-SNARK Bridge**:
-   - Zero-knowledge proof verified transfers across Ethereum, Solana, Base, BNB, and Polygon.
+8. **Regulatory Research Framework**:
+   - MiCA, FATF and EU AI Act requirements are tracked as design considerations; this repository is not an independent legal compliance certification.
+9. **Cross-Chain ZK Bridge Research**:
+   - Cross-chain proof and transfer claims remain unverified until reproducible deployment and security evidence is published.
 10. **1,000 Trillion QMS Hard Cap Tokenomics**:
     - Immutable hard cap of `1,000,000,000,000,000 QMS` with zero unlimited minting.
 
