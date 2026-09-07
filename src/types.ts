@@ -139,3 +139,25 @@ export interface SDKExample {
   description: string;
   code: string;
 }
+
+export interface PqcKeyPair {
+  keyId: string;
+  algorithm: 'ML-KEM-768' | 'ML-DSA-65' | 'Hybrid-Ed25519-Dilithium';
+  publicKey: string;
+  publicKeyFingerprint: string;
+  privateKeyPreview: string;
+  keySizeBits: number;
+  nistSecurityLevel: number;
+  createdAt: string;
+  authorizedForAgent: boolean;
+}
+
+export interface PqcSignatureResult {
+  valid: boolean;
+  algorithm: string;
+  messageDigest: string;
+  signatureLengthBytes: number;
+  signerFingerprint: string;
+  details: string;
+}
+

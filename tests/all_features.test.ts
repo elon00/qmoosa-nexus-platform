@@ -7,6 +7,7 @@ import { TOTAL_QMS_MAX_SUPPLY, TOKENOMICS_ALLOCATION, DEFAULT_AGENT_WALLETS } fr
 import { REGULATORY_FRAMEWORKS, SANCTIONED_ADDRESS_DATABASE } from '../src/data/complianceData';
 import { SECURITY_AUDIT_REPORT } from '../src/data/auditData';
 import { LIVE_SUPPORTED_NETWORKS, BlockchainService } from '../src/services/blockchainService';
+import { generatePqcKeyPair, signPqcMessage, verifyPqcMessage, encapsulateKEM, decapsulateKEM } from '../src/utils/pqcCrypto';
 
 function runTests() {
   console.log('=================================================================');
@@ -56,8 +57,17 @@ function runTests() {
 
   // 3. Post-Quantum Cryptography (PQC) Invariants
   console.log('\n🔹 3. Post-Quantum Cryptography (NIST FIPS 203/204) Invariants:');
-  const pqcSignature = '0xpqc_sig_' + Array.from({ length: 120 }, () => 'a').join('');
-  assert(pqcSignature.startsWith('0xpqc_sig_'), 'NIST FIPS 204 lattice signature format validated');
+  const dsaPair = generatePqcKeyPair('ML-DSA-65');
+  assert(dsaPair.keySizeBits === 1952 * 8, 'ML-DSA-65 keySizeBits matches 15,616 bits (1952 bytes)');
+  const sigRes = signPqcMessage(dsaPair.keyId, 'TEST_PAYLOAD_QMOOSA_NEXUS');
+  assert(sigRes.lengthBytes === 3309, 'NIST FIPS 204 ML-DSA-65 signature is exactly 3,309 bytes');
+  const isValid = verifyPqcMessage(sigRes.signature, 'TEST_PAYLOAD_QMOOSA_NEXUS', dsaPair.publicKey);
+  assert(isValid === true, 'NIST FIPS 204 ML-DSA-65 signature verifies cleanly');
+
+  const kemPair = generatePqcKeyPair('ML-KEM-768');
+  assert(kemPair.keySizeBits === 1184 * 8, 'ML-KEM-768 keySizeBits matches 9,472 bits (1184 bytes)');
+  const enc = encapsulateKEM(kemPair.publicKey);
+  assert(enc.ciphertextHex.length === 1088 * 2, 'ML-KEM-768 ciphertext is exactly 1,088 bytes');
   assert(SECURITY_AUDIT_REPORT.formalInvariants.length === 4, '4/4 formal mathematical invariants proven');
 
   // 4. Conway Automaton Evolutionary Rules

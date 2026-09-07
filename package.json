@@ -1,7 +1,7 @@
 {
-  "name": "react-example",
+  "name": "qmoosa-nexus-platform",
   "private": true,
-  "version": "0.0.0",
+  "version": "4.0.0",
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
@@ -10,10 +10,18 @@
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
-    "test": "tsx tests/all_features.test.ts"
+    "test:features": "tsx tests/all_features.test.ts",
+    "test:nist": "tsx tests/nist-pqc.test.mjs",
+    "audit:crypto": "node scripts/audit-crypto.mjs",
+    "reality:universal": "tsx scripts/reality-universal.ts",
+    "reality:certify": "tsx scripts/generate-urs-certificate.ts",
+    "test": "npm run test:features && npm run test:nist && npm run audit:crypto && npm run reality:universal"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
+    "@noble/curves": "^1.8.1",
+    "@noble/hashes": "^1.7.1",
+    "@noble/post-quantum": "^0.2.1",
     "@tailwindcss/vite": "^4.1.14",
     "@vitejs/plugin-react": "^5.0.4",
     "lucide-react": "^0.546.0",

@@ -1,0 +1,41 @@
+{
+  "system": "QMOOSA-NEXUS-PLATFORM",
+  "version": "4.0.0",
+  "status": "EVIDENCE_BASED_PQC_PROTOCOL",
+  "description": "QMoosa Nexus Deep Tech AI & Quantum Platform with NIST FIPS 203/204 Pure Lattice Cryptography and Conway Automaton Consensus",
+  "truthTaxonomy": {
+    "cryptographicCore": "PURE_TYPESCRIPT_PQC_EXECUTION",
+    "kemScheme": "NIST_FIPS_203_ML_KEM_768",
+    "signatureScheme": "NIST_FIPS_204_ML_DSA_65",
+    "tokenomicsHardCap": 1000000000000000,
+    "simulationEliminated": true,
+    "weakestLinkGate": "H=0.60 (Pending external 3rd-party audit)",
+    "auditFirmStatus": "PENDING_EXTERNAL_AUDIT"
+  },
+  "subsystems": [
+    {
+      "name": "PQCCrypto",
+      "path": "src/utils/pqcCrypto.ts",
+      "status": "VERIFIED_NIST_FIPS_203_204",
+      "wire": {
+        "kemPublicKeyBytes": 1184,
+        "kemSecretKeyBytes": 2400,
+        "kemCiphertextBytes": 1088,
+        "kemSharedSecretBytes": 32,
+        "dsaPublicKeyBytes": 1952,
+        "dsaSecretKeyBytes": 4032,
+        "dsaSignatureBytes": 3309
+      }
+    },
+    {
+      "name": "TokenomicsAndGuardian",
+      "path": "src/data/genesis.ts",
+      "status": "VERIFIED_HARD_CAP_AND_POLICY_RULES"
+    },
+    {
+      "name": "MultiChainService",
+      "path": "src/services/blockchainService.ts",
+      "status": "VERIFIED_CROSS_CHAIN_ROUTING"
+    }
+  ]
+}

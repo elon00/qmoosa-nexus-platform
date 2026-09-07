@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { ShieldCheck, Lock, Cpu, Key, CheckCircle2, AlertTriangle, RefreshCw, Zap, ExternalLink, Code } from 'lucide-react';
+import { generatePqcKeyPair, signPqcMessage, verifyPqcMessage } from '../utils/pqcCrypto';
 
 export const PQCSecurity: React.FC = () => {
-  const [keyPair, setKeyPair] = useState<{ pubKey: string; privKey: string; algorithm: string } | null>(null);
+  const [keyPair, setKeyPair] = useState<{ pubKey: string; privKey: string; algorithm: string; keyId: string } | null>(null);
   const [generating, setGenerating] = useState(false);
   const [signMessage, setSignMessage] = useState('Authorize QMoosa Multi-Chain Agent Swarm Execution: 50 USDT');
   const [signatureOutput, setSignatureOutput] = useState<{ signature: string; verified: boolean; timeMs: number } | null>(null);
@@ -14,12 +15,14 @@ export const PQCSecurity: React.FC = () => {
 
     setTimeout(() => {
       setGenerating(false);
+      const pair = generatePqcKeyPair('ML-DSA-65');
       setKeyPair({
         algorithm: 'ML-DSA-65 (NIST FIPS 204 Standard)',
-        pubKey: '0x' + Array.from({ length: 96 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
-        privKey: '0x' + Array.from({ length: 128 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+        pubKey: '0x' + pair.publicKey,
+        privKey: pair.privateKeyPreview,
+        keyId: pair.keyId,
       });
-    }, 600);
+    }, 50);
   };
 
   const handleSignMessage = () => {
@@ -28,12 +31,17 @@ export const PQCSecurity: React.FC = () => {
 
     setTimeout(() => {
       setSigning(false);
+      const start = performance.now();
+      const sigResult = signPqcMessage(keyPair.keyId, signMessage);
+      const isVerified = verifyPqcMessage(sigResult.signature, signMessage, keyPair.pubKey);
+      const duration = performance.now() - start;
+
       setSignatureOutput({
-        signature: '0xpqc_sig_' + Array.from({ length: 120 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
-        verified: true,
-        timeMs: 1.45,
+        signature: sigResult.signature,
+        verified: isVerified,
+        timeMs: Math.round(duration * 100) / 100,
       });
-    }, 500);
+    }, 50);
   };
 
   return (
