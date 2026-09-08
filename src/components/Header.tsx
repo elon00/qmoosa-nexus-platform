@@ -68,6 +68,9 @@ export const Header: React.FC<HeaderProps> = ({
 
   const navItems = [
     { id: 'agent-studio', label: 'AI Agent Studio', icon: Cpu },
+    { id: 'qarbi-vault', label: 'QARBI AI Escrow', icon: Shield },
+    { id: 'jarsol-charms', label: 'JARSOL Staking & Charms', icon: Zap },
+    { id: 'quantum-shield', label: 'QuantumShield RPC', icon: Lock },
     { id: 'chatbot', label: 'Agent Chatbot', icon: Bot },
     { id: 'workflows', label: 'Workflow Builder', icon: Workflow },
     { id: 'conway', label: 'Conway Automaton', icon: Zap },

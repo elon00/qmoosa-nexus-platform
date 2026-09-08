@@ -16,6 +16,9 @@ import { GenesisWhitepaper } from './components/GenesisWhitepaper';
 import { GlobalCompliance } from './components/GlobalCompliance';
 import { SecurityAudit } from './components/SecurityAudit';
 import { FaucetModal } from './components/FaucetModal';
+import { QarbiEscrowVault } from './components/QarbiEscrowVault';
+import { JarsolStakingBeaming } from './components/JarsolStakingBeaming';
+import { QuantumShieldRpc } from './components/QuantumShieldRpc';
 import { DEFAULT_AGENT_WALLETS } from './data/genesis';
 import { AgentWallet, Block, AgentExecutionPlan } from './types';
 import { LIVE_SUPPORTED_NETWORKS } from './services/blockchainService';
@@ -138,6 +141,12 @@ export default function App() {
         {activeTab === 'agent-studio' && (
           <AgentStudio activeWallet={activeWallet} onExecuteTx={handleExecuteTx} />
         )}
+
+        {activeTab === 'qarbi-vault' && <QarbiEscrowVault />}
+
+        {activeTab === 'jarsol-charms' && <JarsolStakingBeaming />}
+
+        {activeTab === 'quantum-shield' && <QuantumShieldRpc />}
 
         {activeTab === 'chatbot' && (
           <AgentChatbot
