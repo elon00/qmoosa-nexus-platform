@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="12" fill="#0f172a"/>
+  <!-- Outer hexagon ring -->
+  <polygon points="32,4 56,18 56,46 32,60 8,46 8,18" fill="none" stroke="#06b6d4" stroke-width="2" opacity="0.6"/>
+  <!-- Inner hexagon -->
+  <polygon points="32,12 50,22 50,42 32,52 14,42 14,22" fill="none" stroke="#8b5cf6" stroke-width="1.5" opacity="0.8"/>
+  <!-- Q letter center -->
+  <text x="32" y="38" font-family="Arial Black, sans-serif" font-size="22" font-weight="900" fill="#06b6d4" text-anchor="middle">Q</text>
+  <!-- Quantum dots -->
+  <circle cx="32" cy="6" r="2" fill="#06b6d4"/>
+  <circle cx="54" cy="19" r="2" fill="#8b5cf6"/>
+  <circle cx="54" cy="45" r="2" fill="#06b6d4"/>
+  <circle cx="32" cy="58" r="2" fill="#8b5cf6"/>
+  <circle cx="10" cy="45" r="2" fill="#06b6d4"/>
+  <circle cx="10" cy="19" r="2" fill="#8b5cf6"/>
+</svg>
