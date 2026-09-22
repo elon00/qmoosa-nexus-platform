@@ -21,10 +21,10 @@ export const GlobalCompliance: React.FC = () => {
     } else {
       setScreeningResult({
         address: target,
-        label: 'Unflagged / Standard Smart Account',
-        riskCategory: 'Clean / Verified',
-        riskScore: 2,
-        sanctionSource: 'No adverse records found across OFAC, EU, UN, or FATF watchlists.',
+        label: 'Not present in bundled demo fixtures',
+        riskCategory: 'Not screened',
+        riskScore: null,
+        sanctionSource: 'No live sanctions provider was queried. Absence from this local demo list is NOT a clearance.',
       });
     }
   };
@@ -40,13 +40,13 @@ export const GlobalCompliance: React.FC = () => {
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <h1 className="text-xl font-bold text-white">Global Regulatory & Legal Compliance Center</h1>
+                <h1 className="text-xl font-bold text-white">Regulatory & Compliance Research Center</h1>
                 <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-bold">
-                  MiCA & FATF Ready
+                  Legal review required
                 </span>
               </div>
               <p className="text-xs text-slate-400 mt-0.5">
-                Built-in regulatory adherence covering EU MiCA, FATF Travel Rule, GDPR Privacy, and EU AI Act (2024/1689).
+                Design-time research mapping for MiCA, AML/CFT, privacy and AI-regulation considerations. No compliance certification is claimed.
               </p>
             </div>
           </div>
@@ -54,12 +54,12 @@ export const GlobalCompliance: React.FC = () => {
           {/* Quick Metrics */}
           <div className="flex items-center space-x-3 text-xs">
             <div className="bg-slate-950/80 px-3.5 py-2 rounded-xl border border-slate-800 text-center">
-              <span className="text-[10px] text-slate-400 uppercase tracking-wider block">Compliance Score</span>
-              <span className="font-mono font-bold text-emerald-400 text-sm">99.2%</span>
+              <span className="text-[10px] text-slate-400 uppercase tracking-wider block">Certification</span>
+              <span className="font-mono font-bold text-emerald-400 text-sm">Not assessed</span>
             </div>
             <div className="bg-slate-950/80 px-3.5 py-2 rounded-xl border border-slate-800 text-center">
-              <span className="text-[10px] text-slate-400 uppercase tracking-wider block">Global Coverage</span>
-              <span className="font-mono font-bold text-cyan-400 text-sm">7+ Jurisdictions</span>
+              <span className="text-[10px] text-slate-400 uppercase tracking-wider block">Research scope</span>
+              <span className="font-mono font-bold text-cyan-400 text-sm">Selected markets</span>
             </div>
           </div>
         </div>
@@ -97,7 +97,7 @@ export const GlobalCompliance: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Framework List */}
           <div className="space-y-3">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Framework Standards</h3>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Research Checklists</h3>
             <div className="space-y-2">
               {REGULATORY_FRAMEWORKS.map((f) => {
                 const isSelected = f.id === selectedFramework.id;
@@ -133,7 +133,7 @@ export const GlobalCompliance: React.FC = () => {
                   <Award className="w-5 h-5 text-cyan-400" />
                   <span>{selectedFramework.name}</span>
                 </h2>
-                <p className="text-xs text-slate-400 mt-0.5">Enforced by: {selectedFramework.standardBody}</p>
+                <p className="text-xs text-slate-400 mt-0.5">Reference body: {selectedFramework.standardBody}</p>
               </div>
               <span className={`text-xs px-3 py-1 rounded-lg border font-semibold ${selectedFramework.badgeColor}`}>
                 {selectedFramework.status}
@@ -147,7 +147,7 @@ export const GlobalCompliance: React.FC = () => {
             {/* Key Articles Breakdown */}
             <div className="space-y-3">
               <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                Key Articles & Protocol Implementation
+                Requirements & Design Mapping
               </h3>
               <div className="space-y-3">
                 {selectedFramework.keyArticles.map((art, idx) => (
@@ -160,10 +160,10 @@ export const GlobalCompliance: React.FC = () => {
                       </span>
                     </div>
                     <div className="text-xs text-slate-400">
-                      <strong className="text-slate-300">Mandate:</strong> {art.requirement}
+                      <strong className="text-slate-300">Research requirement:</strong> {art.requirement}
                     </div>
                     <div className="text-xs text-slate-300 bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">
-                      <strong className="text-emerald-400">QMoosa Architecture:</strong> {art.qmoosaImplementation}
+                      <strong className="text-emerald-400">Prototype mapping:</strong> {art.qmoosaImplementation}
                     </div>
                   </div>
                 ))}
@@ -179,10 +179,10 @@ export const GlobalCompliance: React.FC = () => {
           <div>
             <h2 className="text-lg font-bold text-white flex items-center space-x-2">
               <Globe className="w-5 h-5 text-cyan-400" />
-              <span>Global Jurisdictions Regulatory Matrix</span>
+              <span>Jurisdiction Research Matrix</span>
             </h2>
             <p className="text-xs text-slate-400 mt-1">
-              Assessment of QMoosa Nexus smart accounts, AI agents, and QMS token classification across top global markets.
+              High-level research prompts only. Actual token/service classification requires qualified, jurisdiction-specific legal analysis.
             </p>
           </div>
 
@@ -193,9 +193,9 @@ export const GlobalCompliance: React.FC = () => {
                   <th className="px-4 py-3">Jurisdiction</th>
                   <th className="px-4 py-3">Regulator</th>
                   <th className="px-4 py-3">Status</th>
-                  <th className="px-4 py-3">QMS Classification</th>
+                  <th className="px-4 py-3">Possible classification</th>
                   <th className="px-4 py-3">Travel Rule Trigger</th>
-                  <th className="px-4 py-3">Compliance Notes</th>
+                  <th className="px-4 py-3">Research notes</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/60 text-slate-300 font-mono">
@@ -209,7 +209,7 @@ export const GlobalCompliance: React.FC = () => {
                       </span>
                     </td>
                     <td className="px-4 py-3.5 text-cyan-300">{j.qmsTokenClass}</td>
-                    <td className="px-4 py-3.5 text-amber-400 font-bold">${j.travelRuleThresholdUsd.toLocaleString()}</td>
+                    <td className="px-4 py-3.5 text-amber-400 font-bold">{j.travelRuleThresholdUsd === null ? 'Requires legal review' : `${j.travelRuleThresholdUsd.toLocaleString()}`}</td>
                     <td className="px-4 py-3.5 text-slate-400 text-[11px] font-sans">{j.notes}</td>
                   </tr>
                 ))}
@@ -225,9 +225,9 @@ export const GlobalCompliance: React.FC = () => {
           <div className="flex items-center space-x-2">
             <Search className="w-5 h-5 text-cyan-400" />
             <div>
-              <h2 className="text-lg font-bold text-white">Automated AML / Sanctions Risk Screener</h2>
+              <h2 className="text-lg font-bold text-white">Demo Watchlist Matching</h2>
               <p className="text-xs text-slate-400">
-                Screen any wallet address or smart contract against global sanctions databases (OFAC, UN, EU).
+                UI demonstration only. This repository does not query a live OFAC, UN, EU, commercial or government sanctions provider.
               </p>
             </div>
           </div>
@@ -244,13 +244,13 @@ export const GlobalCompliance: React.FC = () => {
               onClick={() => handleScreenAddress()}
               className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-xs transition-all cursor-pointer shadow-md shadow-cyan-500/20"
             >
-              Screen Address
+              Check Demo Fixtures
             </button>
           </div>
 
           {/* Quick Preset Buttons */}
           <div className="flex flex-wrap items-center gap-2 text-xs">
-            <span className="text-slate-400 text-[11px]">Test with presets:</span>
+            <span className="text-slate-400 text-[11px]">Synthetic presets:</span>
             {SANCTIONED_ADDRESS_DATABASE.map((record, idx) => (
               <button
                 key={idx}
@@ -269,14 +269,14 @@ export const GlobalCompliance: React.FC = () => {
           {screeningResult && (
             <div
               className={`p-5 rounded-xl border space-y-3 ${
-                screeningResult.riskScore > 30
+                typeof screeningResult.riskScore === 'number' && screeningResult.riskScore > 30
                   ? 'bg-rose-950/30 border-rose-800/80 text-rose-200'
                   : 'bg-emerald-950/30 border-emerald-800/80 text-emerald-200'
               }`}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  {screeningResult.riskScore > 30 ? (
+                  {typeof screeningResult.riskScore === 'number' && screeningResult.riskScore > 30 ? (
                     <AlertTriangle className="w-5 h-5 text-rose-400" />
                   ) : (
                     <CheckCircle2 className="w-5 h-5 text-emerald-400" />
@@ -284,7 +284,7 @@ export const GlobalCompliance: React.FC = () => {
                   <span className="font-bold text-sm">{screeningResult.riskCategory}</span>
                 </div>
                 <span className="font-mono font-bold text-xs px-2.5 py-1 rounded bg-slate-950 border border-slate-800">
-                  Risk Score: {screeningResult.riskScore}/100
+                  Risk Score: {typeof screeningResult.riskScore === 'number' ? `${screeningResult.riskScore}/100` : 'Not assessed'}
                 </span>
               </div>
 
@@ -303,28 +303,28 @@ export const GlobalCompliance: React.FC = () => {
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6 max-w-4xl mx-auto">
           <div className="flex items-center space-x-2">
             <FileText className="w-5 h-5 text-cyan-400" />
-            <h2 className="text-lg font-bold text-white">Global Legal Disclosures & Non-Custodial Architecture</h2>
+            <h2 className="text-lg font-bold text-white">Legal / Product Design Disclosures</h2>
           </div>
 
           <div className="space-y-4 text-xs text-slate-300 leading-relaxed font-sans">
             <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-              <h3 className="font-bold text-sm text-cyan-400">1. Non-Custodial Smart Account Protocol</h3>
+              <h3 className="font-bold text-sm text-cyan-400">1. Non-Custodial Design Goal</h3>
               <p>
-                QMoosa Nexus is a decentralized, non-custodial protocol. At no point does the QMoosa protocol, its developers, or validator nodes hold custody of user funds. Autonomous AI agents execute transactions exclusively via scoped session keys restricted by user-configured Policy Guardian spending boundaries.
+                The repository explores a non-custodial smart-account design. Whether a deployed service is legally or operationally non-custodial depends on the actual contracts, keys, operators, upgrade controls and service architecture.
               </p>
             </div>
 
             <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-              <h3 className="font-bold text-sm text-purple-400">2. Hard-Capped Tokenomics & MiCA Compliance</h3>
+              <h3 className="font-bold text-sm text-purple-400">2. Tokenomics Design & Legal Review</h3>
               <p>
-                The QMS token possesses a permanent, immutable maximum cap of 100,000,000,000,000 (100 Trillion QMS). The token represents utility and network fuel across the parallel execution layer and does not represent an equity claim, dividend right, or financial yield guarantee.
+                The source includes a proposed hard-cap token model. This repository does not determine the token's legal classification and does not claim MiCA, securities or payments compliance.
               </p>
             </div>
 
             <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-              <h3 className="font-bold text-sm text-amber-400">3. Human-in-the-Loop Safeguards (EU AI Act Article 14)</h3>
+              <h3 className="font-bold text-sm text-amber-400">3. Human-in-the-Loop Design Goal</h3>
               <p>
-                In compliance with global autonomous systems regulations, high-value transactions exceeding the user’s designated human approval threshold ($75.00 USDT default) automatically halt autonomous execution and require cryptographic multi-sig confirmation.
+                The prototype includes configurable human-approval thresholds. This is a product-control concept, not evidence of EU AI Act or other regulatory compliance.
               </p>
             </div>
           </div>
