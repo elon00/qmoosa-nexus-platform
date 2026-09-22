@@ -15,7 +15,7 @@ export const SecurityAudit: React.FC = () => {
     setTimeout(() => {
       setIsFuzzing(false);
       setFuzzResult(
-        `✅ Invariant Fuzz Testing Passed: 10,000 randomized state transitions executed. 0 violations found. Max spend invariant ∀t: spent(t) ≤ limit(t) strictly preserved.`
+        `Demo review completed. This UI does not execute a Solidity fuzzer or independent formal-verification engine. Use repository CI/tests and an external audit for security evidence.`
       );
     }, 1200);
   };
@@ -31,13 +31,13 @@ export const SecurityAudit: React.FC = () => {
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <h1 className="text-xl font-bold text-white">Smart Contract Security & Formal Verification</h1>
+                <h1 className="text-xl font-bold text-white">Smart Contract Security Review</h1>
                 <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold">
-                  Score: 98.4 / 100
+                  Independent audit: not completed
                 </span>
               </div>
               <p className="text-xs text-slate-400 mt-1">
-                Audited against CertiK, Slither, OpenZeppelin, and Formal Invariant Verification frameworks.
+                Repository-internal review surface. No CertiK, independent formal-verification, or production security certification is claimed.
               </p>
             </div>
           </div>
@@ -51,12 +51,12 @@ export const SecurityAudit: React.FC = () => {
               {isFuzzing ? (
                 <>
                   <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>Fuzzing 10,000 State Invariants...</span>
+                  <span>Running Demo Review...</span>
                 </>
               ) : (
                 <>
                   <Play className="w-4 h-4 fill-current" />
-                  <span>Run Live Invariant Fuzzer</span>
+                  <span>Run Demo Review</span>
                 </>
               )}
             </button>
@@ -77,14 +77,14 @@ export const SecurityAudit: React.FC = () => {
           <div>
             <h2 className="text-lg font-bold text-white flex items-center space-x-2">
               <Lock className="w-5 h-5 text-purple-400" />
-              <span>Mathematical Invariants & Formal Proofs</span>
+              <span>Security Invariants & Review Targets</span>
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              Formally verified mathematical invariants guaranteeing protocol safety under any execution trace.
+              Desired security properties and repository assertions. Independent proof and adversarial testing are still required.
             </p>
           </div>
           <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-lg border border-emerald-500/20">
-            4 / 4 Proven
+            Independent proof pending
           </span>
         </div>
 
@@ -116,10 +116,10 @@ export const SecurityAudit: React.FC = () => {
           <div>
             <h2 className="text-lg font-bold text-white flex items-center space-x-2">
               <Code className="w-5 h-5 text-cyan-400" />
-              <span>Multi-Chain Verified Smart Contract Deployments</span>
+              <span>Candidate Testnet Contract Metadata</span>
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              Live on-chain contract addresses across Sepolia, Base, Polygon Amoy, and Solana Devnet.
+              Candidate/testnet address metadata. Each deployment remains unverified until transaction, block, bytecode/source and source-commit evidence is reproducible.
             </p>
           </div>
         </div>
@@ -132,7 +132,7 @@ export const SecurityAudit: React.FC = () => {
                 <th className="px-4 py-3">Network</th>
                 <th className="px-4 py-3">Standard</th>
                 <th className="px-4 py-3">Contract Address</th>
-                <th className="px-4 py-3">Explorer & Verification</th>
+                <th className="px-4 py-3">Explorer / evidence check</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60 font-mono">
@@ -151,7 +151,7 @@ export const SecurityAudit: React.FC = () => {
                       rel="noopener noreferrer"
                       className="inline-flex items-center space-x-1 px-2.5 py-1 rounded bg-slate-950 hover:bg-slate-800 text-cyan-400 border border-slate-800 hover:border-cyan-500/40 text-[11px] font-sans font-semibold transition-all"
                     >
-                      <span>View Code</span>
+                      <span>Open Candidate</span>
                       <ExternalLink className="w-3 h-3" />
                     </a>
                   </td>
@@ -166,7 +166,7 @@ export const SecurityAudit: React.FC = () => {
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
         <h2 className="text-lg font-bold text-white flex items-center space-x-2">
           <Terminal className="w-5 h-5 text-indigo-400" />
-          <span>Static Analysis & Audit Findings Matrix</span>
+          <span>Repository Security Review Matrix</span>
         </h2>
 
         <div className="space-y-3">
