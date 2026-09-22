@@ -2,7 +2,7 @@ export interface RegulatoryFramework {
   id: string;
   name: string;
   jurisdiction: string;
-  status: 'Compliant' | 'Enforced' | 'Verified' | 'Exempt';
+  status: 'Research Mapping' | 'Legal Review Required';
   standardBody: string;
   badgeColor: string;
   summary: string;
@@ -10,7 +10,7 @@ export interface RegulatoryFramework {
     article: string;
     requirement: string;
     qmoosaImplementation: string;
-    auditStatus: 'Passed' | 'Active';
+    auditStatus: 'Design Mapping' | 'Needs Legal Review';
   }[];
 }
 
@@ -18,110 +18,114 @@ export interface JurisdictionStatus {
   country: string;
   region: string;
   regulator: string;
-  status: 'Favorable' | 'Compliant' | 'Regulated' | 'Sandbox Ready';
+  status: 'Legal Review Required';
   qmsTokenClass: string;
-  travelRuleThresholdUsd: number;
+  travelRuleThresholdUsd: number | null;
   notes: string;
 }
 
 export interface AMLSanctionRecord {
   address: string;
   label: string;
-  riskCategory: 'High Risk (OFAC/SDN)' | 'Mixer/Tumbler' | 'Phishing/Scam' | 'Clean / Verified';
+  riskCategory: 'Demo High Risk' | 'Demo Neutral';
   riskScore: number;
   sanctionSource: string;
 }
 
+/**
+ * Regulatory research mapping only.
+ *
+ * These records are not legal advice, a compliance determination, a token
+ * classification, or evidence that QMoosa satisfies a regulator's rules.
+ */
 export const REGULATORY_FRAMEWORKS: RegulatoryFramework[] = [
   {
     id: 'mica',
-    name: 'MiCA (Markets in Crypto-Assets)',
-    jurisdiction: 'European Union (27 Nations)',
-    status: 'Compliant',
-    standardBody: 'ESMA / EBA (EU 2023/1114)',
-    badgeColor: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
-    summary: 'Comprehensive EU framework regulating crypto-asset issuers, utility tokens, and CASPs with strict disclosure, reserve, and governance requirements.',
+    name: 'MiCA research checklist',
+    jurisdiction: 'European Union',
+    status: 'Legal Review Required',
+    standardBody: 'EU regulatory framework',
+    badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+    summary:
+      'Design-time checklist for disclosure, governance and operational-resilience questions. Qualified EU legal review is required before any compliance claim.',
     keyArticles: [
       {
-        article: 'Article 4 - Whitepaper & Disclosures',
-        requirement: 'Mandatory publication of clear technical characteristics, tokenomics allocation, risks, and hard supply caps.',
-        qmoosaImplementation: 'Immutable 100T QMS max supply hard-coded in smart contract with automated transparent distribution breakdown.',
-        auditStatus: 'Passed',
+        article: 'Disclosure / whitepaper requirements',
+        requirement: 'Assess applicable issuer, offer, whitepaper and disclosure obligations.',
+        qmoosaImplementation: 'Repository contains tokenomics and risk-disclosure drafts.',
+        auditStatus: 'Needs Legal Review',
       },
       {
-        article: 'Article 14 - Operational Resilience',
-        requirement: 'Protection against protocol failures, server outages, and parallel transaction bottlenecks.',
-        qmoosaImplementation: 'Multi-Chain RPC fallback across Ethereum, Base, Polygon, Arbitrum, and Solana with decentralized validator failovers.',
-        auditStatus: 'Passed',
-      },
-      {
-        article: 'Article 68 - Non-Custodial Architecture',
-        requirement: 'Self-custody protocols where users retain private keys are exempt from custodial liability obligations.',
-        qmoosaImplementation: 'ERC-4337 smart accounts ensure users retain full ownership with scoped session keys restricted by Policy Guardian.',
-        auditStatus: 'Passed',
+        article: 'Operational-resilience considerations',
+        requirement: 'Assess resilience, incident, governance and service-provider obligations where applicable.',
+        qmoosaImplementation: 'Policy controls and fail-closed design goals are research features, not regulatory certification.',
+        auditStatus: 'Needs Legal Review',
       },
     ],
   },
   {
     id: 'fatf',
-    name: 'FATF Recommendation 16 (Travel Rule)',
-    jurisdiction: 'Global / G20 Nations',
-    status: 'Verified',
-    standardBody: 'Financial Action Task Force',
-    badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
-    summary: 'Global standard for anti-money laundering (AML) and counter-terrorist financing (CFT) on virtual asset transfers.',
+    name: 'FATF / AML-CFT research checklist',
+    jurisdiction: 'International',
+    status: 'Legal Review Required',
+    standardBody: 'FATF guidance / local implementing law',
+    badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+    summary:
+      'Research checklist for AML/CFT and travel-rule considerations. The repository does not provide a production sanctions/AML data service.',
     keyArticles: [
       {
-        article: 'Recommendation 16 - Originator & Beneficiary Info',
-        requirement: 'Identity and risk screening for transfers exceeding $1,000 / €1,000 threshold.',
-        qmoosaImplementation: 'Automated on-chain Policy Guardian checks that enforce human multi-sig approval above configured thresholds.',
-        auditStatus: 'Passed',
+        article: 'Travel-rule considerations',
+        requirement: 'Determine whether local implementation applies to the actual service/provider model.',
+        qmoosaImplementation: 'Human-approval and policy-limit concepts exist; identity/travel-rule infrastructure is not certified.',
+        auditStatus: 'Needs Legal Review',
       },
       {
-        article: 'Recommendation 15 - New Technologies Risk',
-        requirement: 'Continuous risk assessment of AI-driven and automated execution systems.',
-        qmoosaImplementation: 'Real-time multi-model AI reasoning engine with dynamic risk scoring (0-100) before any transaction broadcast.',
-        auditStatus: 'Passed',
+        article: 'New-technology risk',
+        requirement: 'Assess risks of automated and AI-assisted transaction systems.',
+        qmoosaImplementation: 'Prototype policy scoring and human-approval concepts are present.',
+        auditStatus: 'Design Mapping',
       },
     ],
   },
   {
     id: 'eu-ai-act',
-    name: 'EU AI Act (Regulation 2024/1689)',
+    name: 'EU AI Act research checklist',
     jurisdiction: 'European Union',
-    status: 'Compliant',
-    standardBody: 'European Commission & AI Office',
-    badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
-    summary: 'World’s first comprehensive AI law governing autonomous systems, high-risk decision engines, and model transparency.',
+    status: 'Legal Review Required',
+    standardBody: 'EU AI regulatory framework',
+    badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+    summary:
+      'Design checklist for transparency, logging and human oversight. Applicability/classification requires legal and product analysis.',
     keyArticles: [
       {
-        article: 'Article 14 - Human Oversight (HITL)',
-        requirement: 'Autonomous financial agents must provide mechanism for human intervention, circuit breaking, and override.',
-        qmoosaImplementation: 'Built-in Emergency Pause, max daily spending limits, and multi-sig triggers on high-value executions.',
-        auditStatus: 'Passed',
+        article: 'Human oversight',
+        requirement: 'Assess whether and how human oversight obligations apply.',
+        qmoosaImplementation: 'Prototype policy limits and approval thresholds demonstrate a possible HITL design.',
+        auditStatus: 'Design Mapping',
       },
       {
-        article: 'Article 13 - Transparency & Traceability',
-        requirement: 'AI planning and tool-calling must produce structured, auditable reasonings and latency/token logs.',
-        qmoosaImplementation: 'Agent Studio logs model provider, latency, token usage, tool invocations, and deterministic policy approvals.',
-        auditStatus: 'Passed',
+        article: 'Transparency / logging',
+        requirement: 'Assess documentation and logging duties for the actual deployed AI system.',
+        qmoosaImplementation: 'Planner metadata is available in the prototype, but provider and production logging must be verified.',
+        auditStatus: 'Needs Legal Review',
       },
     ],
   },
   {
     id: 'gdpr',
-    name: 'GDPR & Cryptographic Privacy',
-    jurisdiction: 'Global / EU',
-    status: 'Verified',
-    standardBody: 'Regulation (EU) 2016/679',
+    name: 'GDPR/privacy research checklist',
+    jurisdiction: 'European Union / EEA',
+    status: 'Legal Review Required',
+    standardBody: 'EU data-protection framework',
     badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
-    summary: 'Data protection by design and right to data erasure.',
+    summary:
+      'Privacy-by-design checklist. Data-controller/processor roles, lawful basis, retention and data-subject rights require deployment-specific analysis.',
     keyArticles: [
       {
-        article: 'Article 25 - Data Protection by Design',
-        requirement: 'No personal identifying information (PII) recorded immutably on-chain.',
-        qmoosaImplementation: 'Zero-Knowledge proofs (ZK-SNARKs) allow verifying intent, spending limits, and balances without exposing user PII.',
-        auditStatus: 'Passed',
+        article: 'Data protection by design',
+        requirement: 'Minimize personal data and establish lawful processing/retention controls.',
+        qmoosaImplementation: 'The prototype should avoid putting PII into public-chain or demo logs; this is a design requirement, not certification.',
+        auditStatus: 'Needs Legal Review',
       },
     ],
   },
@@ -131,95 +135,67 @@ export const GLOBAL_JURISDICTIONS: JurisdictionStatus[] = [
   {
     country: 'European Union',
     region: 'Europe',
-    regulator: 'ESMA / EBA (MiCA Framework)',
-    status: 'Compliant',
-    qmsTokenClass: 'Utility & Network Gas Token',
-    travelRuleThresholdUsd: 1000,
-    notes: 'Full MiCA compliance with self-custody smart account architecture and hard-cap disclosure.',
+    regulator: 'Jurisdiction-specific / EU authorities',
+    status: 'Legal Review Required',
+    qmsTokenClass: 'Undetermined',
+    travelRuleThresholdUsd: null,
+    notes: 'Do not infer MiCA, securities, payments or AML classification from repository design labels.',
   },
   {
     country: 'United States',
     region: 'North America',
-    regulator: 'SEC / CFTC / FinCEN',
-    status: 'Favorable',
-    qmsTokenClass: 'Decentralized Consumptive Token',
-    travelRuleThresholdUsd: 3000,
-    notes: 'No profit-share guarantees or unlimited minting. Consumptive network gas and agent utility.',
+    regulator: 'Federal and state authorities as applicable',
+    status: 'Legal Review Required',
+    qmsTokenClass: 'Undetermined',
+    travelRuleThresholdUsd: null,
+    notes: 'Token/service classification depends on facts, offering structure, custody, use and jurisdiction.',
   },
   {
-    country: 'United Arab Emirates (Dubai)',
+    country: 'United Arab Emirates',
     region: 'Middle East',
-    regulator: 'VARA (Virtual Assets Regulatory Authority)',
-    status: 'Sandbox Ready',
-    qmsTokenClass: 'Payment & Utility Virtual Asset',
-    travelRuleThresholdUsd: 1000,
-    notes: 'VARA-compliant agentic execution layer with built-in AML screening and automated risk audits.',
+    regulator: 'Relevant UAE / emirate authority',
+    status: 'Legal Review Required',
+    qmsTokenClass: 'Undetermined',
+    travelRuleThresholdUsd: null,
+    notes: 'No VARA or other UAE approval/sandbox participation is claimed without external evidence.',
   },
   {
     country: 'Singapore',
     region: 'Asia-Pacific',
-    regulator: 'MAS (Monetary Authority of Singapore)',
-    status: 'Compliant',
-    qmsTokenClass: 'Digital Payment Token (DPT)',
-    travelRuleThresholdUsd: 1100,
-    notes: 'Payment Services Act (PS Act) compliant non-custodial smart contracts and policy controls.',
-  },
-  {
-    country: 'Switzerland',
-    region: 'Europe',
-    regulator: 'FINMA (Crypto Valley)',
-    status: 'Compliant',
-    qmsTokenClass: 'Utility & Infrastructure Token',
-    travelRuleThresholdUsd: 1000,
-    notes: 'FINMA ICO Guidelines compliant with clear token utility and zero dividend rights.',
+    regulator: 'MAS where applicable',
+    status: 'Legal Review Required',
+    qmsTokenClass: 'Undetermined',
+    travelRuleThresholdUsd: null,
+    notes: 'No Payment Services Act license, exemption or token classification is claimed.',
   },
   {
     country: 'United Kingdom',
     region: 'Europe',
-    regulator: 'FCA (Financial Conduct Authority)',
-    status: 'Compliant',
-    qmsTokenClass: 'Unregulated Utility Token (Self-Custodial)',
-    travelRuleThresholdUsd: 1000,
-    notes: 'FCA financial promotions compliant and non-custodial smart account architecture.',
-  },
-  {
-    country: 'Japan',
-    region: 'Asia-Pacific',
-    regulator: 'FSA / JVCEA',
-    status: 'Regulated',
-    qmsTokenClass: 'Crypto-Asset (Type 1)',
-    travelRuleThresholdUsd: 700,
-    notes: 'Strict AML/CFT travel rule compliance and segregation of automated agent permissions.',
+    regulator: 'FCA / other authority where applicable',
+    status: 'Legal Review Required',
+    qmsTokenClass: 'Undetermined',
+    travelRuleThresholdUsd: null,
+    notes: 'Financial-promotion, AML and cryptoasset rules require deployment-specific review.',
   },
 ];
 
+/**
+ * Synthetic fixtures for UI testing only.
+ * This is NOT a sanctions database and MUST NOT be used to clear real addresses.
+ */
 export const SANCTIONED_ADDRESS_DATABASE: AMLSanctionRecord[] = [
   {
-    address: '0x8576acc5c05d6ce0b48b3b337050230292082b20',
-    label: 'Tornado.Cash Router / OFAC Sanctioned',
-    riskCategory: 'High Risk (OFAC/SDN)',
-    riskScore: 98,
-    sanctionSource: 'US Treasury OFAC Specially Designated Nationals List',
+    address: '0x0000000000000000000000000000000000000001',
+    label: 'Demo high-risk fixture',
+    riskCategory: 'Demo High Risk',
+    riskScore: 95,
+    sanctionSource: 'Synthetic UI fixture — not an OFAC/UN/EU data source',
   },
   {
-    address: '0x1da5821544e25c636c1417ba96ade4cf6d2f9b5a',
-    label: 'Lazarus Group Exploit Wallet',
-    riskCategory: 'High Risk (OFAC/SDN)',
-    riskScore: 100,
-    sanctionSource: 'UN Security Council Sanctions Committee',
-  },
-  {
-    address: '0x7ff910f54dd0a16b9b3e100f28e8334468f7f2b9',
-    label: 'Phishing Drainer Syndicate',
-    riskCategory: 'Phishing/Scam',
-    riskScore: 92,
-    sanctionSource: 'Chainalysis / Global Threat Intelligence',
-  },
-  {
-    address: '0x0000000000000000000000000000000000000000',
-    label: 'Genesis Mint Address',
-    riskCategory: 'Clean / Verified',
-    riskScore: 0,
-    sanctionSource: 'Protocol Verified',
+    address: '0x0000000000000000000000000000000000000002',
+    label: 'Demo neutral fixture',
+    riskCategory: 'Demo Neutral',
+    riskScore: 5,
+    sanctionSource: 'Synthetic UI fixture — not a sanctions clearance',
   },
 ];
