@@ -1,139 +1,113 @@
 /**
- * QMoosa Nexus Platform — URS Evidence Certificate Generator
- * Runs truth checks, pure-TS verification, NIST test suite, crypto auditor, and URS gates,
- * then signs the evidence certificate with NIST FIPS 204 ML-DSA-65.
+ * Generate a repository-internal, cryptographically signed evidence report.
+ *
+ * The ML-DSA signature authenticates the generated report only. This is NOT
+ * an independent audit, FIPS validation, legal certification, or production
+ * readiness certificate.
  */
-
-import { execSync } from 'node:child_process';
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
-import path from 'node:path';
 import { sha256 } from '@noble/hashes/sha256.js';
 import { ml_dsa65 } from '@noble/post-quantum/ml-dsa.js';
 
-console.log('╔══════════════════════════════════════════════════════════════════════════╗');
-console.log('║   QMOOSA NEXUS PLATFORM — URS EVIDENCE CERTIFICATE                       ║');
-console.log('╚══════════════════════════════════════════════════════════════════════════╝\n');
-
-function run(cmd: string, title: string) {
-  console.log(`▶ ${title}...`);
+function run(args: string[], title: string): void {
+  console.log(`▶ ${title}`);
   try {
-    const out = execSync(cmd, { stdio: 'pipe' }).toString();
-    console.log(`  ✅ ${title}: PASSED\n`);
-    return out;
-  } catch (e: any) {
-    console.error(`  ❌ ${title}: FAILED!`);
-    console.error(e.stdout ? e.stdout.toString() : e.message);
+    execFileSync(process.execPath, args, { stdio: 'inherit' });
+  } catch {
+    console.error(`FAILED: ${title}`);
     process.exit(1);
   }
 }
 
-// 1. Comprehensive Features Test
-run('node C:/Users/marti/quantumshield/node_modules/tsx/dist/cli.mjs tests/all_features.test.ts', '[1/4] Running Comprehensive Multi-Feature Automated Test Suite');
+console.log('QMoosa Nexus — generating repository-internal evidence report');
 
-// 2. Official NIST Vectors
-run('node C:/Users/marti/quantumshield/node_modules/tsx/dist/cli.mjs tests/nist-pqc.test.mjs', '[2/4] Running Official NIST & Wycheproof Test Suite');
+run(['--import', 'tsx', 'tests/all_features.test.ts'], 'Repository regression suite');
+run(['--import', 'tsx', 'tests/nist-pqc.test.mjs'], 'PQC integration tests');
+run(['scripts/audit-crypto.mjs'], 'Cryptographic integration audit');
+run(['--import', 'tsx', 'scripts/reality-universal.ts'], 'Repository-internal verification gates');
 
-// 3. Standalone Crypto Audit
-run('node scripts/audit-crypto.mjs', '[3/4] Running Standalone Cryptographic Auditor');
+const reporterSeed = new Uint8Array(32).fill(0x57);
+const reporter = ml_dsa65.keygen(reporterSeed);
 
-// 4. Universal Reality Engine
-run('node C:/Users/marti/quantumshield/node_modules/tsx/dist/cli.mjs scripts/reality-universal.ts', '[4/4] Running Universal Reality Engine');
-
-// Generate Deterministic Root Key for Certificate Signing
-const rootSeed = new Uint8Array(32).fill(0x57);
-const certAuthority = ml_dsa65.keygen(rootSeed);
-
-const certificatePayload = {
+const payload = {
   protocol: 'QMoosa-Nexus-Platform',
-  standard: 'UNIVERSAL_REALITY_SYSTEM_v1.0',
-  timestamp: new Date().toISOString(),
-  truthTaxonomy: {
-    cryptographicCore: 'PURE_TYPESCRIPT_PQC_EXECUTION',
-    kemScheme: 'NIST_FIPS_203_ML_KEM_768',
-    signatureScheme: 'NIST_FIPS_204_ML_DSA_65',
-    tokenomicsHardCap: 1000000000000000,
-    conwayConsensus: 'DETERMINISTIC_CELLULAR_AUTOMATON',
-    failClosedConjunction: true,
-    simulationEliminated: true
+  reportType: 'REPOSITORY_INTERNAL_EVIDENCE',
+  generatedAt: new Date().toISOString(),
+  projectStatus: 'RESEARCH_TESTNET_ORIENTED_PROTOTYPE',
+  evidence: {
+    repositoryChecksExecuted: true,
+    pqcIntegrationTestsExecuted: true,
+    cryptographicIntegrationAuditExecuted: true,
+    internalVerificationGatesExecuted: true,
   },
-  evidenceScores: {
-    E_ExecutionReality: 1.0,
-    I_InputReality: 1.0,
-    O_OutputImpact: 1.0,
-    V_IndependentVerification: 1.0,
-    R_Reproducibility: 1.0,
-    C_ClaimHonesty: 1.0,
-    P_Provenance: 1.0,
-    F_FailClosedSafety: 1.0,
-    A_AdversarialSecurity: 1.0,
-    H_ExternalAudit: 0.6
+  limitations: {
+    independentVerification: false,
+    externalSecurityAudit: false,
+    fipsModuleValidation: false,
+    productionCertification: false,
+    legalComplianceCertification: false,
+    mainnetVerification: false,
+    contractDeploymentVerification: false,
   },
-  weakestLinkScore: 6.0,
-  cumulativeAverage: 9.6,
-  status: 'EVIDENCE_BASED_PQC_PROTOCOL',
-  certificationAuthority: {
-    scheme: 'ML-DSA-65',
-    publicKeyHex: Buffer.from(certAuthority.publicKey).toString('hex')
-  }
+  reporter: {
+    signatureScheme: 'ML-DSA-65 integration',
+    publicKeyHex: Buffer.from(reporter.publicKey).toString('hex'),
+    note:
+      'This key belongs to the repository-generated report process; it is not an independent certification authority.',
+  },
 };
 
-const payloadBytes = Buffer.from(JSON.stringify(certificatePayload, null, 2));
-const masterHash = Buffer.from(sha256(payloadBytes)).toString('hex');
-const certSignature = Buffer.from(ml_dsa65.sign(payloadBytes, certAuthority.secretKey)).toString('hex');
+const canonical = Buffer.from(
+  JSON.stringify(payload, Object.keys(payload).sort())
+);
+const reportHash = Buffer.from(sha256(canonical)).toString('hex');
+const signatureHex = Buffer.from(
+  ml_dsa65.sign(canonical, reporter.secretKey)
+).toString('hex');
 
-const finalCertificate = {
-  ...certificatePayload,
-  masterHash,
-  certificateSignature: certSignature
+const report = {
+  ...payload,
+  sha256: reportHash,
+  signatureHex,
 };
 
 fs.mkdirSync('reality', { recursive: true });
+fs.writeFileSync(
+  'reality/URS_EVIDENCE_CERTIFICATE.json',
+  JSON.stringify(report, null, 2)
+);
 
-fs.writeFileSync('reality/URS_EVIDENCE_CERTIFICATE.json', JSON.stringify(finalCertificate, null, 2));
+const markdown = `# QMoosa Nexus — Internal Evidence Report
 
-const markdownSummary = `# ⚛️ QMoosa Nexus Platform — Universal Reality Evidence Certificate
+Generated: \`${payload.generatedAt}\`  
+SHA-256: \`${reportHash}\`  
+ML-DSA signature length: \`${signatureHex.length / 2} bytes\`
 
-**Sealed Timestamp**: \`${finalCertificate.timestamp}\`  
-**Master Reality Hash (SHA-256)**: \`${masterHash}\`  
-**NIST FIPS 204 ML-DSA-65 Cert Signature**:  
-\`${certSignature.slice(0, 96)}...\`
+## Checks executed
 
----
+- repository regression suite
+- PQC integration tests
+- cryptographic integration audit
+- repository-internal verification gates
 
-## 1. Universal Reality System (URS v1.0) Scorecard
+## Limitations
 
-| Dimension | Weight | Score | Verdict |
-| :--- | :---: | :---: | :--- |
-| **E — Execution Reality** | 10% | **1.00 / 1.0** | Pure-TS NIST FIPS 203 & 204 lattice crypto runs natively in memory |
-| **I — Input Reality** | 10% | **1.00 / 1.0** | Genuine multi-chain states, Conway automata grids and PQC nonces |
-| **O — Output Impact** | 10% | **1.00 / 1.0** | Validated state commitments, 1,000T token hard-cap and lattice signatures |
-| **V — Independent Verification** | 10% | **1.00 / 1.0** | 8/8 NIST tiers, 23/23 crypto assertions & 10/10 URS gates pass |
-| **R — Reproducibility** | 10% | **1.00 / 1.0** | Deterministic KAT vectors (RFC 5869, SHA-256, FIPS 203/204) pass cleanly |
-| **C — Claim Honesty** | 10% | **1.00 / 1.0** | Zero simulation claims; all endpoints explicitly reflect actual mathematical execution |
-| **P — Provenance** | 10% | **1.00 / 1.0** | Cryptographic Git commits, pinned packages, immutable hashes |
-| **F — Fail-Closed Safety** | 10% | **1.00 / 1.0** | Invalid signature or altered payload immediately aborts transaction |
-| **A — Adversarial Security** | 10% | **1.00 / 1.0** | Bit-flip mutation testing rejects forged tokens in constant time |
-| **H — External Audit** | 10% | **0.60 / 1.0** | Internal algorithmic verification completed; pending multi-firm external review |
+This report is created by the repository itself. It is **not**:
 
-### Universal Reality Law Calculation
+- an independent security audit;
+- FIPS validation of the application;
+- legal or regulatory certification;
+- verified mainnet/testnet deployment evidence;
+- verified contract-bytecode provenance;
+- production-readiness certification.
 
-$$\\text{URS}_{10} = \\min(E, I, O, V, R, C, P, F, A, H) \\times 10 = \\min(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.6) \\times 10 = 6.0 / 10$$
-
-*Note: For internal automated subsystems, $URS = 10.0 / 10$. The honest composite score reflects $H = 0.60$ until independent external audit.*
-
----
-
-## 2. Cryptographic Root Integrity
-
-- **Root Authority Scheme**: NIST FIPS 204 ML-DSA-65
-- **Public Key**: \`${finalCertificate.certificationAuthority.publicKeyHex.slice(0, 64)}...\`
-- **Certificate Signature**: Verified with genuine ML-DSA-65 pure lattice polynomial arithmetic.
+The ML-DSA signature authenticates this generated report only.
 `;
 
-fs.writeFileSync('reality/URS_EVIDENCE_CERTIFICATE.md', markdownSummary);
+fs.writeFileSync('reality/URS_EVIDENCE_CERTIFICATE.md', markdown);
 
-console.log(`🏆 Certificate Generated and Cryptographically Signed!`);
-console.log(`   Master Reality Hash: ${masterHash}`);
-console.log(`   Signature (ML-DSA-65): ${certSignature.slice(0, 32)}...`);
-console.log(`   Saved to: reality/URS_EVIDENCE_CERTIFICATE.json`);
-console.log(`   Saved to: reality/URS_EVIDENCE_CERTIFICATE.md\n`);
+console.log('Internal evidence report generated');
+console.log(`  SHA-256: ${reportHash}`);
+console.log('  Independent audit: NOT CLAIMED');
+console.log('  Production certification: NOT CLAIMED');
