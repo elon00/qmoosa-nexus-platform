@@ -28,6 +28,7 @@ var import_vite = require("vite");
 var import_genai = require("@google/genai");
 
 // src/data/contractsManifest.ts
+var UNVERIFIED = "UNVERIFIED_CANDIDATE";
 var DEPLOYED_CONTRACTS_MANIFEST = [
   {
     name: "QMoosa Nexus Token",
@@ -36,43 +37,47 @@ var DEPLOYED_CONTRACTS_MANIFEST = [
     network: "ethereum-sepolia",
     chainId: 11155111,
     address: "0x71C8360d5bA8a4674D6E02598711e9f1D89d7001",
-    explorerUrl: "https://sepolia.etherscan.io/token/0x71C8360d5bA8a4674D6E02598711e9f1D89d7001",
-    standard: "ERC-20 (EIP-2612 Hard-Capped 100T)",
-    verified: true,
-    deploymentTimestamp: 1718e9
+    explorerUrl: "https://sepolia.etherscan.io/address/0x71C8360d5bA8a4674D6E02598711e9f1D89d7001",
+    standard: "ERC-20 / EIP-2612 research contract",
+    verified: false,
+    deploymentTimestamp: 0,
+    evidenceStatus: UNVERIFIED
   },
   {
-    name: "Policy Guardian Enforcement Engine",
+    name: "Policy Guardian",
     chain: "Ethereum Sepolia",
     network: "ethereum-sepolia",
     chainId: 11155111,
     address: "0x49B5c269Da9101b0fB274d6C8A60eE475Ec63e77",
-    explorerUrl: "https://sepolia.etherscan.io/address/0x49B5c269Da9101b0fB274d6C8A60eE475Ec63e77#code",
-    standard: "Autonomous Policy Enforcer v1.0",
-    verified: true,
-    deploymentTimestamp: 1718e9
+    explorerUrl: "https://sepolia.etherscan.io/address/0x49B5c269Da9101b0fB274d6C8A60eE475Ec63e77",
+    standard: "Policy-control research contract",
+    verified: false,
+    deploymentTimestamp: 0,
+    evidenceStatus: UNVERIFIED
   },
   {
-    name: "QMoosa Smart Account Factory",
+    name: "QMoosa Smart Account",
     chain: "Base Sepolia",
     network: "base-sepolia",
     chainId: 84532,
     address: "0x83B33075d9e504c5598AcCE4D5174092b77a0631",
-    explorerUrl: "https://sepolia.basescan.org/address/0x83B33075d9e504c5598AcCE4D5174092b77a0631#code",
-    standard: "ERC-4337 Account Abstraction",
-    verified: true,
-    deploymentTimestamp: 1718e9
+    explorerUrl: "https://sepolia.basescan.org/address/0x83B33075d9e504c5598AcCE4D5174092b77a0631",
+    standard: "ERC-4337 research contract",
+    verified: false,
+    deploymentTimestamp: 0,
+    evidenceStatus: UNVERIFIED
   },
   {
-    name: "QMoosa Gas & Token Paymaster",
+    name: "QMoosa Paymaster",
     chain: "Base Sepolia",
     network: "base-sepolia",
     chainId: 84532,
     address: "0x22F439d5A64C2E9f753C49dF0bE87A4eDDeF1108",
-    explorerUrl: "https://sepolia.basescan.org/address/0x22F439d5A64C2E9f753C49dF0bE87A4eDDeF1108#code",
-    standard: "ERC-4337 Paymaster",
-    verified: true,
-    deploymentTimestamp: 1718e9
+    explorerUrl: "https://sepolia.basescan.org/address/0x22F439d5A64C2E9f753C49dF0bE87A4eDDeF1108",
+    standard: "ERC-4337 paymaster research contract",
+    verified: false,
+    deploymentTimestamp: 0,
+    evidenceStatus: UNVERIFIED
   },
   {
     name: "QMoosa Guardian Program",
@@ -80,21 +85,23 @@ var DEPLOYED_CONTRACTS_MANIFEST = [
     network: "solana-devnet",
     chainId: "devnet",
     address: "QMoosAGuardian11111111111111111111111111111",
-    explorerUrl: "https://explorer.solana.com/address/QMoosAGuardian11111111111111111111111111111?cluster=devnet",
-    standard: "Solana Anchor PDA v0.30",
-    verified: true,
-    deploymentTimestamp: 1718e9
+    explorerUrl: "https://explorer.solana.com/?cluster=devnet",
+    standard: "Solana program research metadata",
+    verified: false,
+    deploymentTimestamp: 0,
+    evidenceStatus: UNVERIFIED
   },
   {
-    name: "Cross-Chain ZK Proof Relayer",
+    name: "Cross-Chain Relayer",
     chain: "Polygon Amoy",
     network: "polygon-amoy",
     chainId: 80002,
     address: "0x55B229a4aEcE1c29fB5B49dF0bE87A4eDDeF9921",
-    explorerUrl: "https://amoy.polygonscan.com/address/0x55B229a4aEcE1c29fB5B49dF0bE87A4eDDeF9921#code",
-    standard: "ZK-SNARK Cross-Chain Relayer",
-    verified: true,
-    deploymentTimestamp: 1718e9
+    explorerUrl: "https://amoy.polygonscan.com/address/0x55B229a4aEcE1c29fB5B49dF0bE87A4eDDeF9921",
+    standard: "Cross-chain relayer research contract",
+    verified: false,
+    deploymentTimestamp: 0,
+    evidenceStatus: UNVERIFIED
   }
 ];
 
