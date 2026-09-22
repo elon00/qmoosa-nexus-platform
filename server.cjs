@@ -211,17 +211,72 @@ var SECURITY_AUDIT_REPORT = {
   ]
 };
 
+// src/server/runtimeSecurity.ts
+var import_node_crypto = require("node:crypto");
+var MUTATION_PATHS = /* @__PURE__ */ new Set([
+  "/api/blockchain/mine",
+  "/api/faucet/drip",
+  "/api/agent/execute-plan",
+  "/api/sdk/execute"
+]);
+function sameToken(header, token) {
+  const expected = Buffer.from(`Bearer ${token}`);
+  const actual = Buffer.from(header || "");
+  return expected.length === actual.length && (0, import_node_crypto.timingSafeEqual)(expected, actual);
+}
+function allowedOrigins() {
+  const values = (process.env.QMOOSA_CORS_ALLOWED_ORIGINS || "").split(",").map((v) => v.trim()).filter(Boolean);
+  if (process.env.APP_URL?.trim()) values.push(process.env.APP_URL.trim());
+  return new Set(values);
+}
+function applyRuntimeSecurity(app2) {
+  const production = process.env.NODE_ENV === "production";
+  const mutationsEnabled = process.env.QMOOSA_ENABLE_SIMULATION_MUTATIONS === "true";
+  const adminToken = process.env.QMOOSA_ADMIN_TOKEN?.trim() || "";
+  const origins = allowedOrigins();
+  if (production && mutationsEnabled && (adminToken.length < 32 || /^change[_-]?me/i.test(adminToken))) {
+    throw new Error("QMOOSA_ADMIN_TOKEN must be a non-placeholder secret of at least 32 characters when production simulation mutations are enabled");
+  }
+  app2.use((req, res, next) => {
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.setHeader("X-Frame-Options", "DENY");
+    res.setHeader("Referrer-Policy", "no-referrer");
+    res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+    const origin = req.headers.origin;
+    if (origin) {
+      if (origins.has(origin)) {
+        res.setHeader("Access-Control-Allow-Origin", origin);
+        res.setHeader("Vary", "Origin");
+        res.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
+        res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+      } else if (production) {
+        return res.status(403).json({ error: "origin not allowed" });
+      }
+    }
+    if (req.method === "OPTIONS") return res.sendStatus(204);
+    next();
+  });
+  app2.use((req, res, next) => {
+    if (!production || req.method !== "POST" || !MUTATION_PATHS.has(req.path)) return next();
+    if (!mutationsEnabled) {
+      return res.status(503).json({
+        error: "simulation mutation API is disabled in production",
+        mode: "READ_ONLY_PRODUCTION_PREVIEW"
+      });
+    }
+    if (!sameToken(req.headers.authorization, adminToken)) {
+      return res.status(401).json({ error: "unauthorized" });
+    }
+    next();
+  });
+}
+
 // server.ts
 var app = (0, import_express.default)();
 var PORT = Number(process.env.PORT || 3e3);
 app.disable("x-powered-by");
 app.use(import_express.default.json({ limit: "256kb" }));
-app.use((_req, res, next) => {
-  res.setHeader("X-Content-Type-Options", "nosniff");
-  res.setHeader("X-Frame-Options", "DENY");
-  res.setHeader("Referrer-Policy", "no-referrer");
-  next();
-});
+applyRuntimeSecurity(app);
 var aiClient = null;
 function getGeminiClient() {
   if (!aiClient) {
@@ -247,7 +302,7 @@ var pendingTransactions = [];
 app.get("/api/health", (_req, res) => {
   res.json({
     status: "ok",
-    network: "QMoosa Nexus Global Multi-Chain Platform v2.0",
+    network: "QMoosa Nexus local prototype",
     compliance: "NOT INDEPENDENTLY CERTIFIED",
     securityScore: null,
     statusNote: "This prototype health endpoint does not certify legal compliance or an external security audit."
@@ -615,7 +670,8 @@ app.post("/api/agent/execute-plan", (req, res) => {
     txHash,
     planId,
     blockHeight: currentBlockHeight + 1,
-    message: "Plan successfully executed on QMoosa Testnet and added to mempool for next block inclusion."
+    message: "SIMULATION ONLY: plan recorded in local in-memory prototype state; no blockchain transaction was broadcast.",
+    simulation: true
   });
 });
 app.post("/api/sdk/execute", (req, res) => {
@@ -625,13 +681,13 @@ app.post("/api/sdk/execute", (req, res) => {
   }
   const simulatedTx = "0xsdk_" + Math.random().toString(16).substring(2, 10);
   const logs = [
-    `[QMoosa SDK v2.0.0] Connecting to ${language} multi-chain runtime testnet...`,
-    `[RPC Endpoint] Active: https://rpc.testnet.qmoosa.nexus`,
-    `[Policy Engine] PolicyGuardian limits & permissions verified against active session key.`,
-    `[Security Audit] Formal Invariants checked (No reentrancy, bounded allowance).`,
-    `[VM] Executing parallel WASM/EVM bytecode...`,
-    `[ZK Proof] Generated Succinct ZK-SNARK proof hash: 0xzkp_${Math.random().toString(16).substring(2, 10)}`,
-    `[Transaction] Broadcast successfully! Hash: ${simulatedTx}`
+    `[SIMULATION] Evaluating ${language} snippet in local demo mode; no remote runtime connection is made.`,
+    `[SIMULATION] No RPC endpoint contacted.`,
+    `[SIMULATION] Local policy fixture evaluated; no on-chain session key was queried.`,
+    `[SIMULATION] No independent security audit or formal verification was executed by this endpoint.`,
+    `[SIMULATION] Source text accepted as demo input; arbitrary bytecode is not executed.`,
+    `[SIMULATION] No ZK proof was generated.`,
+    `[SIMULATION] Demo receipt generated locally: ${simulatedTx}`
   ];
   res.json({
     success: true,
@@ -639,7 +695,8 @@ app.post("/api/sdk/execute", (req, res) => {
     outputLogs: logs,
     txHash: simulatedTx,
     gasUsedQms: 0.05,
-    status: "Executed"
+    status: "SIMULATED",
+    simulation: true
   });
 });
 async function startServer() {
@@ -657,7 +714,7 @@ async function startServer() {
     });
   }
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`QMoosa Nexus Global Testnet Server running on http://0.0.0.0:${PORT}`);
+    console.log(`QMoosa Nexus prototype server listening on http://0.0.0.0:${PORT}; public-network production is not claimed`);
   });
 }
 startServer();
