@@ -1,115 +1,135 @@
-# 🌌 QMoosa Nexus Protocol: Autonomous Web 4.0 Multi-Chain AI Agent Engine
+# QMoosa Nexus Protocol
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Security Status](https://img.shields.io/badge/Security%20Audit-Not%20Independently%20Verified-lightgrey.svg)]()
-[![Compliance Status](https://img.shields.io/badge/Compliance-Legal%20Review%20Required-lightgrey.svg)]()
-[![PQC Lattice](https://img.shields.io/badge/NIST%20FIPS%20204-ML--DSA-purple.svg)]()
-[![Supply Cap](https://img.shields.io/badge/Total%20Supply-1%2C000%20Trillion%20QMS-cyan.svg)]()
-[![Netlify Status](https://img.shields.io/badge/Netlify-Live%20Deploy-success.svg)]()
+Prototype/research platform for **account-abstraction policy controls, AI-assisted transaction planning, multi-chain UX experiments, post-quantum cryptography integration, and Conway cellular-automaton research**.
 
-> **QMoosa Nexus** is a prototype/research Web 4.0 execution platform exploring Account Abstraction (ERC-4337), deterministic **Policy Guardians**, **Post-Quantum Lattice Cryptography (NIST FIPS 203/204)**, and **Conway Cellular Automata Emergence** across Ethereum Sepolia, Solana, Base, Polygon Amoy, Arbitrum, BNB Chain, and native QMoosa Parallel L1.
+## Reality status
 
----
+**STATUS: RESEARCH / TESTNET-ORIENTED PROTOTYPE — NOT MAINNET, NOT INDEPENDENTLY AUDITED**
 
-## 📖 Mere History & Genesis of the Project
+The repository contains real application code, Solidity contracts, policy logic, cryptographic integration tests, and testnet-oriented network configuration. It also contains demo/simulation surfaces. These must not be confused with live financial infrastructure.
 
-### The Origin (2024–2025)
-Decentralized finance and smart contract execution historically required humans to manually sign every transaction, bridge assets, and monitor gas slippage. With the advent of multi-modal AI reasoning engines, agents could reason about complex workflows but possessed zero safe on-chain custody—exposing users to infinite drain attacks or rogue transactions.
+### Currently evidenced
 
-### The Web 4.0 Breakthrough (2025–2026)
-QMoosa Nexus engineered the **Policy Guardian**: an immutable on-chain smart contract sandbox that restricts AI agents using scoped session keys, daily spending caps in USDT/QMS, per-transaction velocity limits, target contract whitelists, and automatic emergency pauses.
+- React/TypeScript application and Express API
+- Solidity source for token, policy-guardian, smart-account, paymaster and relayer experiments
+- application-layer ML-DSA / ML-KEM integration tests
+- repository CI and dependency/secret scanning
+- deterministic policy constraints and human-approval concepts
+- EVM/Solana testnet network configuration
+- local/in-memory block, faucet, agent, and wallet demonstrations
 
-### Post-Quantum & Conway Emergence (Present)
-To ensure multi-decade cryptographic longevity, QMoosa integrated **Post-Quantum Lattice Cryptography (ML-DSA / Dilithium & ML-KEM / Kyber)** alongside John Conway’s **Cellular Automata** as a decentralized entropy beacon for multi-agent swarm state transitions.
+### Not independently established
 
----
+- production mainnet deployment
+- independently verified contract deployments
+- independent smart-contract or cryptographic audit
+- FIPS validation of this application as a cryptographic module
+- legal/regulatory compliance in any jurisdiction
+- live sanctions-screening coverage
+- a production QMoosa L1
+- real validator counts, TPS, TVL, liquidity, users, volume or revenue
+- live Claude/DeepSeek/local-model routing unless an actual provider integration is configured and evidenced
+- atomic cross-chain settlement or ZK bridge security
 
-## ⚡ Core Protocol Pillars & Features
+## Security boundary
 
-1. **AI Agent Studio & Multi-Model Planner**:
-   - Google Gemini 3.6 Flash, Claude 3.5 Sonnet, and DeepSeek-R1 WASM Enclave routing.
-   - Structured tool calling (`get_balance()`, `simulate_swap()`, `prepare_tx()`).
-2. **Deterministic Policy Guardian**:
-   - On-chain daily spending limits, max per-tx limits, and human multi-sig approval triggers.
-3. **Conway AI Automaton & Evolutionary State Engine**:
-   - 2D Cellular Automata lattice modeling emergent agent swarms and on-chain verifiable entropy.
-4. **Post-Quantum Cryptography (PQC)**:
-   - NIST FIPS 203/204 ML-DSA and ML-KEM lattice keypair generation and signature validation.
-5. **Interactive Agentic Chatbot**:
-   - Natural language interface that understands balance queries and commands multi-chain swaps.
-6. **Visual Workflow Builder**:
-   - Multi-stage autonomous pipeline creator (Triggers ➜ Policy Check ➜ AI Planning ➜ Settlement).
-7. **Token Launchpad (QMoosa Launchpad)**:
-   - Fair launch bonding curve engine for autonomous agent utility tokens.
-8. **Regulatory Research Framework**:
-   - MiCA, FATF and EU AI Act requirements are tracked as design considerations; this repository is not an independent legal compliance certification.
-9. **Cross-Chain ZK Bridge Research**:
-   - Cross-chain proof and transfer claims remain unverified until reproducible deployment and security evidence is published.
-10. **1,000 Trillion QMS Hard Cap Tokenomics**:
-    - Immutable hard cap of `1,000,000,000,000,000 QMS` with zero unlimited minting.
+The current web/API experience must treat mutation, block, faucet, wallet, agent-execution and cross-chain flows as **prototype/simulation** unless a response contains externally verifiable network evidence.
 
----
+Unknown wallet addresses are never considered “clean” merely because they are absent from a bundled demo list.
 
-## 💎 1,000 Trillion QMS Token Distribution
+See [SECURITY.md](SECURITY.md).
 
-| Allocation Category | Percentage | Amount (QMS) | Vesting Schedule |
-|---|---|---|---|
-| **Ecosystem & Autonomous Agent Economy** | 35.0% | 350 Trillion | Continuous Ecosystem Grants & Liquidity |
-| **Proof-of-Useful-Compute Staking Rewards** | 25.0% | 250 Trillion | Block Rewards for GPU Provers (10-Year Halving) |
-| **Public Liquidity & Global Market Making** | 15.0% | 150 Trillion | Day-1 Tier-1 CEX/DEX Liquidity Pairs |
-| **Community Fair Launchpad & Quests** | 10.0% | 100 Trillion | Incentivized Testnet Quests & Viral Airdrop |
-| **Core Protocol Engineering & Security** | 10.0% | 100 Trillion | 48-Month Linear Vesting with 12-Month Cliff |
-| **Strategic Global Institutional Backing** | 5.0% | 50 Trillion | 36-Month Lockup for Infrastructure Partners |
-| **Total Hard Cap** | **100.0%** | **1,000 Trillion QMS** | **Immutable Smart Contract Cap** |
+## Development
 
----
+Requirements:
 
-## 🚀 Quick Start & Development
+- Node.js 22+
+- npm
 
-### 1. Installation
 ```bash
 git clone https://github.com/elon00/qmoosa-nexus-platform.git
 cd qmoosa-nexus-platform
-npm install
-```
-
-### 2. Run Local Testnet Server & Vite Frontend
-```bash
-npm run dev
-# Starts express API & Vite on http://localhost:3000
-```
-
-### 3. Production Build & Lint
-```bash
-npm run build
+npm ci
 npm run lint
-```
-
-### 4. Run Automated Tests
-```bash
 npm test
+npm run build
 ```
 
----
+Run locally:
 
-## 🌐 Netlify Deployment
+```bash
+cp .env.example .env.local
+npm run dev
+```
 
-This repository is pre-configured for single-click Netlify Serverless deployment:
-- **Publish Directory**: `dist`
-- **Functions Directory**: `netlify/functions`
-- **API Redirection**: `/api/*` ➜ `/.netlify/functions/api`
+## AI provider configuration
 
----
+The application can use Gemini when a valid server-side key/model are configured:
 
-## 📜 Smart Contracts Manifest
+```env
+GEMINI_API_KEY=
+GEMINI_MODEL=
+APP_URL=http://localhost:3000
+```
 
-- **QMoosaToken.sol**: `0x71C8360d5bA8a4674D6E02598711e9f1D89d7001` (Sepolia)
-- **PolicyGuardian.sol**: `0x49B5c269Da9101b0fB274d6C8A60eE475Ec63e77` (Sepolia)
-- **QMoosaSmartAccount.sol**: `0x83B33075d9e504c5598AcCE4D5174092b77a0631` (Base Sepolia)
-- **QMoosaPaymaster.sol**: `0x22F439d5A64C2E9f753C49dF0bE87A4eDDeF1108` (Base Sepolia)
-- **Solana Anchor Guardian**: `QMoosAGuardian11111111111111111111111111111` (Solana Devnet)
+Fallback planners and non-Gemini model adapters are simulation/demo logic unless separately connected to the named provider. Static latency, token-count or cost fields are not performance benchmarks.
 
----
+## Contract source and deployment evidence
 
-## 📄 License
-MIT License © 2026 QMoosa Nexus Foundation. All rights reserved.
+Contract source lives under `contracts/`.
+
+The repository also contains candidate/testnet address metadata. **An address in a manifest is not treated as verified merely because it is syntactically valid.** Before publication as a deployed contract, record:
+
+1. chain/network;
+2. transaction hash;
+3. deployer;
+4. block number;
+5. bytecode/source verification link;
+6. exact source commit;
+7. constructor/initialization parameters.
+
+Until those are reproducibly verified, the UI/API must label the address **unverified candidate/testnet metadata**.
+
+## Tokenomics
+
+QMS supply/allocation tables are **design/governance proposals** unless backed by a verified deployed contract and governance state. They are not an investment offer, exchange-listing commitment, liquidity guarantee, staking-return promise, or evidence of market value.
+
+## Compliance research
+
+MiCA, FATF, GDPR, securities, travel-rule and AI-regulation material in this repository is a **design/research checklist**, not legal advice or certification.
+
+A production compliance program requires qualified legal review, jurisdiction-specific analysis, operational controls, current sanctions/data providers, retention policies, and audit evidence.
+
+## Cryptography
+
+The repository exercises ML-DSA/ML-KEM application-layer integrations. Using NIST-standardized algorithms does not make the whole application a FIPS-validated cryptographic module or establish whole-system quantum resistance.
+
+## CI and security
+
+The repository runs:
+
+- TypeScript lint/type checks
+- production build
+- feature/PQC/reality tests
+- npm dependency audit
+- secret scanning
+
+Green CI is necessary engineering evidence, not a production certificate.
+
+## Production-readiness gate
+
+Before production/mainnet use, require at minimum:
+
+1. verified deployments and release provenance;
+2. independent smart-contract/security review;
+3. authenticated APIs and strict authorization for every mutation;
+4. real provider integrations with failure/timeout handling;
+5. managed secrets and key rotation;
+6. monitoring, alerting, backup/recovery and incident response;
+7. load/performance testing under documented workloads;
+8. legal/compliance review for token/financial activity;
+9. externally verifiable operational evidence.
+
+## License
+
+MIT, as currently declared by the repository.
