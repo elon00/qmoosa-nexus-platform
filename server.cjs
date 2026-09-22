@@ -108,32 +108,18 @@ var DEPLOYED_CONTRACTS_MANIFEST = [
 // src/data/complianceData.ts
 var SANCTIONED_ADDRESS_DATABASE = [
   {
-    address: "0x8576acc5c05d6ce0b48b3b337050230292082b20",
-    label: "Tornado.Cash Router / OFAC Sanctioned",
-    riskCategory: "High Risk (OFAC/SDN)",
-    riskScore: 98,
-    sanctionSource: "US Treasury OFAC Specially Designated Nationals List"
+    address: "0x0000000000000000000000000000000000000001",
+    label: "Demo high-risk fixture",
+    riskCategory: "Demo High Risk",
+    riskScore: 95,
+    sanctionSource: "Synthetic UI fixture \u2014 not an OFAC/UN/EU data source"
   },
   {
-    address: "0x1da5821544e25c636c1417ba96ade4cf6d2f9b5a",
-    label: "Lazarus Group Exploit Wallet",
-    riskCategory: "High Risk (OFAC/SDN)",
-    riskScore: 100,
-    sanctionSource: "UN Security Council Sanctions Committee"
-  },
-  {
-    address: "0x7ff910f54dd0a16b9b3e100f28e8334468f7f2b9",
-    label: "Phishing Drainer Syndicate",
-    riskCategory: "Phishing/Scam",
-    riskScore: 92,
-    sanctionSource: "Chainalysis / Global Threat Intelligence"
-  },
-  {
-    address: "0x0000000000000000000000000000000000000000",
-    label: "Genesis Mint Address",
-    riskCategory: "Clean / Verified",
-    riskScore: 0,
-    sanctionSource: "Protocol Verified"
+    address: "0x0000000000000000000000000000000000000002",
+    label: "Demo neutral fixture",
+    riskCategory: "Demo Neutral",
+    riskScore: 5,
+    sanctionSource: "Synthetic UI fixture \u2014 not a sanctions clearance"
   }
 ];
 
