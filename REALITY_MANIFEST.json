@@ -1,41 +1,48 @@
 {
   "system": "QMOOSA-NEXUS-PLATFORM",
-  "version": "4.0.0",
-  "status": "EVIDENCE_BASED_PQC_PROTOCOL",
-  "description": "QMoosa Nexus Deep Tech AI & Quantum Platform with NIST FIPS 203/204 Pure Lattice Cryptography and Conway Automaton Consensus",
+  "version": "4.1.0",
+  "status": "RESEARCH_TESTNET_ORIENTED_PROTOTYPE",
+  "description": "Account-abstraction, policy-control, multi-chain UX and application-layer PQC research platform with explicitly labeled simulation surfaces.",
   "truthTaxonomy": {
-    "cryptographicCore": "PURE_TYPESCRIPT_PQC_EXECUTION",
-    "kemScheme": "NIST_FIPS_203_ML_KEM_768",
-    "signatureScheme": "NIST_FIPS_204_ML_DSA_65",
-    "tokenomicsHardCap": 1000000000000000,
-    "simulationEliminated": true,
-    "weakestLinkGate": "H=0.60 (Pending external 3rd-party audit)",
-    "auditFirmStatus": "PENDING_EXTERNAL_AUDIT"
+    "cryptographicCore": "APPLICATION_LAYER_ML_KEM_ML_DSA_INTEGRATION",
+    "tokenomics": "DESIGN_MODEL",
+    "simulatedNetworkState": true,
+    "simulatedProviderAdapters": true,
+    "independentAudit": false,
+    "productionCertified": false,
+    "mainnetVerified": false,
+    "complianceCertified": false
   },
   "subsystems": [
     {
       "name": "PQCCrypto",
       "path": "src/utils/pqcCrypto.ts",
-      "status": "VERIFIED_NIST_FIPS_203_204",
-      "wire": {
-        "kemPublicKeyBytes": 1184,
-        "kemSecretKeyBytes": 2400,
-        "kemCiphertextBytes": 1088,
-        "kemSharedSecretBytes": 32,
-        "dsaPublicKeyBytes": 1952,
-        "dsaSecretKeyBytes": 4032,
-        "dsaSignatureBytes": 3309
-      }
+      "status": "REPOSITORY_TESTED_NOT_FIPS_VALIDATED"
     },
     {
       "name": "TokenomicsAndGuardian",
       "path": "src/data/genesis.ts",
-      "status": "VERIFIED_HARD_CAP_AND_POLICY_RULES"
+      "status": "DESIGN_AND_PROTOTYPE_LOGIC"
     },
     {
       "name": "MultiChainService",
       "path": "src/services/blockchainService.ts",
-      "status": "VERIFIED_CROSS_CHAIN_ROUTING"
+      "status": "TESTNET_RPC_READS_AND_FAIL_CLOSED_BROADCAST"
+    },
+    {
+      "name": "ContractManifest",
+      "path": "src/data/contractsManifest.ts",
+      "status": "UNVERIFIED_CANDIDATE_DEPLOYMENT_METADATA"
+    },
+    {
+      "name": "ComplianceResearch",
+      "path": "src/data/complianceData.ts",
+      "status": "RESEARCH_ONLY_NOT_LEGAL_CERTIFICATION"
+    },
+    {
+      "name": "SecurityReview",
+      "path": "src/data/auditData.ts",
+      "status": "REPOSITORY_INTERNAL_REVIEW_NOT_INDEPENDENT_AUDIT"
     }
   ]
 }
