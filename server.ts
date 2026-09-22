@@ -8,23 +8,30 @@ import { REGULATORY_FRAMEWORKS, GLOBAL_JURISDICTIONS, SANCTIONED_ADDRESS_DATABAS
 import { SECURITY_AUDIT_REPORT } from './src/data/auditData';
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT || 3000);
 
-app.use(express.json());
+app.disable('x-powered-by');
+app.use(express.json({ limit: '256kb' }));
+app.use((_req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Referrer-Policy', 'no-referrer');
+  next();
+});
 
 // Initialize Gemini Client Lazily/Safely
 let aiClient: GoogleGenAI | null = null;
 function getGeminiClient(): GoogleGenAI {
   if (!aiClient) {
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY?.trim();
     if (!apiKey) {
-      console.warn('GEMINI_API_KEY is not set. Falling back to rule-based agent planner.');
+      throw new Error('GEMINI_API_KEY is not configured');
     }
     aiClient = new GoogleGenAI({
-      apiKey: apiKey || 'DUMMY_KEY',
+      apiKey,
       httpOptions: {
         headers: {
-          'User-Agent': 'aistudio-build',
+          'User-Agent': 'qmoosa-nexus-prototype',
         },
       },
     });
@@ -32,62 +39,11 @@ function getGeminiClient(): GoogleGenAI {
   return aiClient;
 }
 
-// Global In-Memory Blockchain Testnet State
-let currentBlockHeight = 104820;
-let totalQmsCirculating = 15_420_000_000_000; // 15.42 Trillion QMS
+// Local in-memory demonstration state. This is not public-network telemetry.
+let currentBlockHeight = 0;
+let totalQmsCirculating = 0;
 let recentBlocks: Block[] = [];
 let pendingTransactions: BlockTransaction[] = [];
-
-// Seed initial blocks
-function initBlockchain() {
-  const sampleTxs: BlockTransaction[] = [
-    {
-      hash: '0x3a1f9e...b81d',
-      blockNumber: currentBlockHeight - 2,
-      from: '0xNexusAgent_8a1f9e2b03c4',
-      to: '0xContract_DeFi_Router_01',
-      amount: 20.0,
-      tokenSymbol: 'USDT',
-      chain: 'qmoosa',
-      type: 'AgentExecution',
-      gasUsed: 21000,
-      status: 'Success',
-      timestamp: Date.now() - 45000,
-      agentName: 'ShoppingAssistantAgent',
-    },
-    {
-      hash: '0x7e4b2a...c902',
-      blockNumber: currentBlockHeight - 1,
-      from: '0x0000000000000000000000000000000000000000',
-      to: '0xUser_Vault_9988',
-      amount: 1000000.0,
-      tokenSymbol: 'QMS',
-      chain: 'qmoosa',
-      type: 'Transfer',
-      gasUsed: 18000,
-      status: 'Success',
-      timestamp: Date.now() - 20000,
-    },
-  ];
-
-  recentBlocks = [
-    {
-      height: currentBlockHeight,
-      hash: '0xqms_blk_' + Math.random().toString(16).substring(2, 10),
-      previousHash: '0xqms_blk_' + Math.random().toString(16).substring(2, 10),
-      proposer: 'US-East Parallel VM Prover (0xqms...val1003)',
-      txCount: 2,
-      transactions: sampleTxs,
-      zkProofHash: '0xzkp_nexus_' + Math.random().toString(16).substring(2, 12),
-      gasLimit: 30000000,
-      gasUsed: 39000,
-      tps: 8450,
-      timestamp: Date.now(),
-    },
-  ];
-}
-
-initBlockchain();
 
 // API Endpoints
 
@@ -106,7 +62,7 @@ app.get('/api/blockchain/status', (_req: Request, res: Response) => {
   res.json({
     blockHeight: currentBlockHeight,
     tps: null,
-    avgBlockTimeMs: 350,
+    avgBlockTimeMs: null,
     activeValidators: null,
     totalStakedQms: null,
     maxSupplyQms: 100_000_000_000_000,
@@ -126,13 +82,13 @@ app.post('/api/blockchain/mine', (_req: Request, res: Response) => {
     height: currentBlockHeight,
     hash: '0xqms_blk_' + Math.random().toString(16).substring(2, 10),
     previousHash: recentBlocks[0]?.hash || '0xgenesis_hash',
-    proposer: 'Nexus Alpha Node (0xqms...val1001)',
+    proposer: 'LOCAL_SIMULATION',
     txCount: minedTxs.length,
     transactions: minedTxs,
-    zkProofHash: '0xzkp_nexus_' + Math.random().toString(16).substring(2, 12),
+    zkProofHash: 'demo-proof-' + Math.random().toString(16).substring(2, 12),
     gasLimit: 30000000,
     gasUsed: minedTxs.length * 21000,
-    tps: Math.floor(8000 + Math.random() * 2000),
+    tps: 0,
     timestamp: Date.now(),
   };
 
@@ -211,10 +167,10 @@ app.post('/api/compliance/screen', (req: Request, res: Response) => {
 
   return res.json({
     address,
-    label: 'Standard Account',
-    riskCategory: 'Clean / Verified',
-    riskScore: 2,
-    sanctionSource: 'Clean across OFAC, EU, UN, and FATF database checks',
+    label: 'Not present in bundled demo fixtures',
+    riskCategory: 'NOT_SCREENED',
+    riskScore: null,
+    sanctionSource: 'No live sanctions provider was queried. Absence from the local demo list is not a clearance.',
   });
 });
 
@@ -239,45 +195,45 @@ app.post('/api/agent/plan-execution', async (req: Request, res: Response) => {
   const requestedModel = modelId || 'auto';
   let resolvedModel = requestedModel;
   let modelProviderName = 'Google Gemini';
-  let avgLatencyMs = 180;
-  let tokensUsed = Math.floor(250 + Math.random() * 150);
+  let avgLatencyMs = 0;
+  let tokensUsed = 0;
 
   // Auto-Router Decision Logic
   if (requestedModel === 'auto') {
     const lower = prompt.toLowerCase();
     if (lower.includes('arbitrage') || lower.includes('yield') || lower.includes('complex')) {
       resolvedModel = 'claude-3.5-sonnet';
-      modelProviderName = 'Anthropic Claude 3.5 Sonnet (Routed for Deep Reasoning)';
+      modelProviderName = 'Simulated Claude-style adapter (no provider call)';
       avgLatencyMs = 380;
     } else if (lower.includes('open') || lower.includes('privacy') || lower.includes('enclave')) {
       resolvedModel = 'deepseek-r1-local';
-      modelProviderName = 'DeepSeek-R1 WASM Enclave (Routed for Open Weights)';
+      modelProviderName = 'Simulated local-model adapter (no provider call)';
       avgLatencyMs = 290;
     } else if (lower.includes('swap') || lower.includes('fast') || lower.includes('pay')) {
       resolvedModel = 'qmoosa-agent-v1';
-      modelProviderName = 'QMoosa Special Agent v1 (Routed for Sub-second DEX Execution)';
+      modelProviderName = 'Simulated QMoosa adapter (no provider call)';
       avgLatencyMs = 110;
     } else {
       resolvedModel = 'gemini-3.6-flash';
-      modelProviderName = 'Google Gemini 3.6 Flash (Routed for High Speed)';
+      modelProviderName = 'Configured Gemini provider (Routed for High Speed)';
       avgLatencyMs = 175;
     }
   } else {
     const modelNames: Record<string, string> = {
-      'gemini-3.6-flash': 'Google Gemini 3.6 Flash',
-      'claude-3.5-sonnet': 'Anthropic Claude 3.5 Sonnet',
-      'deepseek-r1-local': 'DeepSeek-R1 (Local WASM Container)',
-      'llama3-70b-local': 'Llama 3 70B (Meta Open-Source)',
-      'qmoosa-agent-v1': 'QMoosa Special Agent v1',
+      'gemini-3.6-flash': 'Configured Gemini provider',
+      'claude-3.5-sonnet': 'Simulated Claude-style adapter',
+      'deepseek-r1-local': 'Simulated local-model adapter',
+      'llama3-70b-local': 'Simulated Llama-style adapter',
+      'qmoosa-agent-v1': 'Simulated QMoosa adapter',
     };
-    modelProviderName = modelNames[requestedModel] || 'Google Gemini 3.6 Flash';
+    modelProviderName = modelNames[requestedModel] || 'Configured Gemini provider';
   }
 
   try {
     let planData: any = null;
 
     // Use Gemini API directly if selected or routed to Gemini, and key exists
-    if (process.env.GEMINI_API_KEY && (resolvedModel === 'gemini-3.6-flash' || requestedModel === 'auto')) {
+    if (process.env.GEMINI_API_KEY && process.env.GEMINI_MODEL && (resolvedModel === 'gemini-3.6-flash' || requestedModel === 'auto')) {
       try {
         const ai = getGeminiClient();
         const systemInstruction = `
@@ -326,7 +282,7 @@ Wallet Policy Constraints:
 `;
 
         const response = await ai.models.generateContent({
-          model: 'gemini-3.6-flash',
+          model: process.env.GEMINI_MODEL,
           contents: geminiPrompt,
           config: {
             systemInstruction,
@@ -368,7 +324,7 @@ Wallet Policy Constraints:
           planData = JSON.parse(response.text);
         }
       } catch (e) {
-        console.warn('Gemini call failed or key inactive, proceeding with Model Adapter simulation:', e);
+        console.warn('Configured Gemini call failed; using explicitly simulated fallback planner:', e);
       }
     }
 
@@ -378,7 +334,7 @@ Wallet Policy Constraints:
       const isEth = prompt.toLowerCase().includes('ethereum') || prompt.toLowerCase().includes('eth');
       const targetChain = isSolana ? 'solana' : isEth ? 'ethereum' : 'qmoosa';
 
-      let modelReasoningPrefix = `[Model: ${modelProviderName}] Analyzed prompt intent via model adapter. `;
+      let modelReasoningPrefix = `[SIMULATION: ${modelProviderName}] Generated a local demonstration plan. `;
 
       if (resolvedModel === 'claude-3.5-sonnet') {
         modelReasoningPrefix += `Evaluated deep cross-chain liquidity graph across 7 EVM/Solana bridges, calculated optimal route with zero slippage bound.`;
@@ -394,7 +350,7 @@ Wallet Policy Constraints:
 
       planData = {
         reasoningSummary: modelReasoningPrefix,
-        confidenceScore: resolvedModel === 'claude-3.5-sonnet' ? 99 : 96,
+        confidenceScore: 0,
         steps: [
           {
             stepIndex: 1,
@@ -475,7 +431,7 @@ Wallet Policy Constraints:
       policyApproved,
       policyViolations: violations,
       simulationHash: '0xsim_' + Math.random().toString(16).substring(2, 12),
-      status: policyApproved ? 'ready' : 'draft',
+      status: 'draft',
       timestamp: Date.now(),
     };
 
