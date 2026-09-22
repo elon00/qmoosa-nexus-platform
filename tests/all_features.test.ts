@@ -1,13 +1,14 @@
 /**
- * QMoosa Nexus Global Platform - Comprehensive Multi-Feature Automated Test Suite
- * Tests: 1,000T Tokenomics, Policy Guardian, Conway Automaton, PQC, Workflows, and Compliance.
+ * QMoosa Nexus prototype - repository regression suite.
+ * Tests design/accounting invariants, policy logic, PQC integration, Conway rules,
+ * network configuration, and compliance-research fixtures. It is not a production certification.
  */
 
 import { TOTAL_QMS_MAX_SUPPLY, TOKENOMICS_ALLOCATION, DEFAULT_AGENT_WALLETS } from '../src/data/genesis';
 import { REGULATORY_FRAMEWORKS, SANCTIONED_ADDRESS_DATABASE } from '../src/data/complianceData';
 import { SECURITY_AUDIT_REPORT } from '../src/data/auditData';
-import { LIVE_SUPPORTED_NETWORKS, BlockchainService } from '../src/services/blockchainService';
-import { generatePqcKeyPair, signPqcMessage, verifyPqcMessage, encapsulateKEM, decapsulateKEM } from '../src/utils/pqcCrypto';
+import { LIVE_SUPPORTED_NETWORKS } from '../src/services/blockchainService';
+import { generatePqcKeyPair, signPqcMessage, verifyPqcMessage, encapsulateKEM } from '../src/utils/pqcCrypto';
 
 function runTests() {
   console.log('=================================================================');
@@ -68,7 +69,7 @@ function runTests() {
   assert(kemPair.keySizeBits === 1184 * 8, 'ML-KEM-768 keySizeBits matches 9,472 bits (1184 bytes)');
   const enc = encapsulateKEM(kemPair.publicKey);
   assert(enc.ciphertextHex.length === 1088 * 2, 'ML-KEM-768 ciphertext is exactly 1,088 bytes');
-  assert(SECURITY_AUDIT_REPORT.formalInvariants.length === 4, '4/4 formal mathematical invariants proven');
+  assert(SECURITY_AUDIT_REPORT.formalInvariants.length === 4, '4 security invariant review targets are registered');
 
   // 4. Conway Automaton Evolutionary Rules
   console.log('\n🔹 4. Conway AI Automaton Deterministic Transition Tests:');
@@ -90,25 +91,33 @@ function runTests() {
   assert(reproduction === true, 'Conway Reproduction rule: dead cell with 3 neighbors is born');
 
   // 5. Multi-Chain Network & RPC Tests
-  console.log('\n🔹 5. Multi-Chain Live Network Configuration Tests:');
+  console.log('\n🔹 5. Multi-Chain Configuration Tests:');
   const supportedChainKeys = Object.keys(LIVE_SUPPORTED_NETWORKS);
-  assert(supportedChainKeys.includes('qmoosa-l1'), 'QMoosa Parallel L1 configured');
+  assert(supportedChainKeys.includes('qmoosa-l1'), 'QMoosa local-simulation network context configured');
   assert(supportedChainKeys.includes('ethereum-sepolia'), 'Ethereum Sepolia configured');
   assert(supportedChainKeys.includes('base-sepolia'), 'Base Sepolia L2 configured');
   assert(supportedChainKeys.includes('solana-devnet'), 'Solana Devnet configured');
   assert(supportedChainKeys.includes('polygon-amoy'), 'Polygon Amoy configured');
 
   // 6. Regulatory & AML Sanctions Tests
-  console.log('\n🔹 6. Global Regulatory & AML Compliance Screening:');
-  assert(REGULATORY_FRAMEWORKS.length >= 4, 'MiCA, FATF, GDPR, and EU AI Act frameworks active');
+  console.log('\n🔹 6. Regulatory Research & Demo Watchlist Fixtures:');
+  assert(REGULATORY_FRAMEWORKS.length >= 4, 'Regulatory research mappings are registered');
   
-  const ofacMatch = SANCTIONED_ADDRESS_DATABASE.find(
-    (s) => s.address.toLowerCase() === '0x8576acc5c05d6ce0b48b3b337050230292082b20'
+  const demoHighRisk = SANCTIONED_ADDRESS_DATABASE.find(
+    (s) => s.address.toLowerCase() === '0x0000000000000000000000000000000000000001'
   );
-  assert(ofacMatch !== undefined && ofacMatch.riskScore >= 95, 'OFAC Sanctioned address correctly flagged as High Risk');
+  assert(
+    demoHighRisk !== undefined && demoHighRisk.riskScore >= 90,
+    'Synthetic high-risk fixture is identified by the demo list'
+  );
+  const unknownAddress = '0x1111111111111111111111111111111111111111';
+  assert(
+    SANCTIONED_ADDRESS_DATABASE.every((s) => s.address.toLowerCase() !== unknownAddress),
+    'Unknown addresses remain unscreened rather than being treated as clean'
+  );
 
   console.log('\n=================================================================');
-  console.log(`🎉 ALL ${passedTests}/${totalTests} TESTS PASSED WITH 100% GREEN STATUS!`);
+  console.log(`Repository regression checks passed: ${passedTests}/${totalTests}`);
   console.log('=================================================================\n');
 }
 
