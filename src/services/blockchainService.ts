@@ -23,9 +23,9 @@ export interface ActiveNetworkConfig {
 export const LIVE_SUPPORTED_NETWORKS: Record<string, ActiveNetworkConfig> = {
   'qmoosa-l1': {
     id: 'qmoosa-l1',
-    name: 'QMoosa Parallel L1 (Sub-Second VM)',
+    name: 'QMoosa L1 Concept (Local Simulation)',
     chainType: 'qmoosa-native',
-    rpcUrl: 'https://rpc.testnet.qmoosa.nexus',
+    rpcUrl: 'local-simulation',
     explorerBaseUrl: '/explorer',
     nativeCurrency: { name: 'QMoosa Token', symbol: 'QMS', decimals: 18 },
   },
@@ -125,10 +125,21 @@ export class BlockchainService {
   /**
    * Fetch real on-chain balance via RPC (with graceful fallback)
    */
-  static async fetchLiveRpcBalance(address: string, networkKey: string): Promise<{ balance: number; symbol: string }> {
+  static async fetchLiveRpcBalance(
+    address: string,
+    networkKey: string
+  ): Promise<{ balance: number; symbol: string; verified: boolean; error?: string }> {
     const config = LIVE_SUPPORTED_NETWORKS[networkKey];
-    if (!config || config.chainType === 'qmoosa-native') {
-      return { balance: 1000000.0, symbol: 'QMS' };
+    if (!config) {
+      return { balance: 0, symbol: 'UNKNOWN', verified: false, error: 'unknown network' };
+    }
+    if (config.chainType === 'qmoosa-native') {
+      return {
+        balance: 0,
+        symbol: config.nativeCurrency.symbol,
+        verified: false,
+        error: 'QMoosa native network is a local simulation; no public RPC balance is available',
+      };
     }
 
     try {
@@ -142,19 +153,47 @@ export class BlockchainService {
             params: [address, 'latest'],
             id: 1,
           }),
+          signal: AbortSignal.timeout(8000),
         });
+        if (!response.ok) {
+          return {
+            balance: 0,
+            symbol: config.nativeCurrency.symbol,
+            verified: false,
+            error: `RPC HTTP ${response.status}`,
+          };
+        }
         const data = await response.json();
-        if (data.result) {
+        if (typeof data.result === 'string') {
           const wei = BigInt(data.result);
           const eth = Number(wei) / 1e18;
-          return { balance: Number(eth.toFixed(4)), symbol: config.nativeCurrency.symbol };
+          return {
+            balance: Number(eth.toFixed(6)),
+            symbol: config.nativeCurrency.symbol,
+            verified: true,
+          };
         }
+        return {
+          balance: 0,
+          symbol: config.nativeCurrency.symbol,
+          verified: false,
+          error: 'RPC response did not contain a balance result',
+        };
       }
-    } catch (e) {
-      console.warn(`RPC fetch balance error on ${config.name}:`, e);
+      return {
+        balance: 0,
+        symbol: config.nativeCurrency.symbol,
+        verified: false,
+        error: 'live Solana balance adapter not implemented',
+      };
+    } catch (error: any) {
+      return {
+        balance: 0,
+        symbol: config.nativeCurrency.symbol,
+        verified: false,
+        error: error?.message || 'RPC request failed',
+      };
     }
-
-    return { balance: 0.25, symbol: config.nativeCurrency.symbol };
   }
 
   /**
@@ -166,19 +205,19 @@ export class BlockchainService {
     amount: number;
     tokenSymbol: string;
     networkKey: string;
-  }): Promise<{ success: boolean; txHash: string; explorerUrl: string }> {
-    const config = LIVE_SUPPORTED_NETWORKS[payload.networkKey] || LIVE_SUPPORTED_NETWORKS['qmoosa-l1'];
-    const mockHash = '0x' + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join('');
+  }): Promise<{ success: boolean; txHash: string; explorerUrl: string; error?: string }> {
+    const config = LIVE_SUPPORTED_NETWORKS[payload.networkKey];
+    if (!config) {
+      return { success: false, txHash: '', explorerUrl: '', error: 'unknown network' };
+    }
 
-    const explorerUrl =
-      config.explorerBaseUrl.startsWith('http')
-        ? `${config.explorerBaseUrl}/tx/${mockHash}`
-        : `/explorer?search=${mockHash}`;
-
+    // This repository does not hold user signing keys and does not implement a
+    // production transaction broadcaster. Never fabricate a chain tx hash.
     return {
-      success: true,
-      txHash: mockHash,
-      explorerUrl,
+      success: false,
+      txHash: '',
+      explorerUrl: config.explorerBaseUrl,
+      error: 'transaction broadcast is not implemented; prepare/sign with an authorized wallet provider',
     };
   }
 }
