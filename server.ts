@@ -6,18 +6,14 @@ import { Block, BlockTransaction, AgentExecutionPlan, ExecutionPlanStep } from '
 import { DEPLOYED_CONTRACTS_MANIFEST } from './src/data/contractsManifest';
 import { REGULATORY_FRAMEWORKS, GLOBAL_JURISDICTIONS, SANCTIONED_ADDRESS_DATABASE } from './src/data/complianceData';
 import { SECURITY_AUDIT_REPORT } from './src/data/auditData';
+import { applyRuntimeSecurity } from './src/server/runtimeSecurity';
 
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
 
 app.disable('x-powered-by');
 app.use(express.json({ limit: '256kb' }));
-app.use((_req, res, next) => {
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'DENY');
-  res.setHeader('Referrer-Policy', 'no-referrer');
-  next();
-});
+applyRuntimeSecurity(app);
 
 // Initialize Gemini Client Lazily/Safely
 let aiClient: GoogleGenAI | null = null;
@@ -50,7 +46,7 @@ let pendingTransactions: BlockTransaction[] = [];
 app.get('/api/health', (_req: Request, res: Response) => {
   res.json({
     status: 'ok',
-    network: 'QMoosa Nexus Global Multi-Chain Platform v2.0',
+    network: 'QMoosa Nexus local prototype',
     compliance: 'NOT INDEPENDENTLY CERTIFIED',
     securityScore: null,
     statusNote: 'This prototype health endpoint does not certify legal compliance or an external security audit.',
@@ -469,7 +465,8 @@ app.post('/api/agent/execute-plan', (req: Request, res: Response) => {
     txHash,
     planId,
     blockHeight: currentBlockHeight + 1,
-    message: 'Plan successfully executed on QMoosa Testnet and added to mempool for next block inclusion.',
+    message: 'SIMULATION ONLY: plan recorded in local in-memory prototype state; no blockchain transaction was broadcast.',
+    simulation: true,
   });
 });
 
@@ -483,13 +480,13 @@ app.post('/api/sdk/execute', (req: Request, res: Response) => {
 
   const simulatedTx = '0xsdk_' + Math.random().toString(16).substring(2, 10);
   const logs = [
-    `[QMoosa SDK v2.0.0] Connecting to ${language} multi-chain runtime testnet...`,
-    `[RPC Endpoint] Active: https://rpc.testnet.qmoosa.nexus`,
-    `[Policy Engine] PolicyGuardian limits & permissions verified against active session key.`,
-    `[Security Audit] Formal Invariants checked (No reentrancy, bounded allowance).`,
-    `[VM] Executing parallel WASM/EVM bytecode...`,
-    `[ZK Proof] Generated Succinct ZK-SNARK proof hash: 0xzkp_${Math.random().toString(16).substring(2, 10)}`,
-    `[Transaction] Broadcast successfully! Hash: ${simulatedTx}`,
+    `[SIMULATION] Evaluating ${language} snippet in local demo mode; no remote runtime connection is made.`,
+    `[SIMULATION] No RPC endpoint contacted.`,
+    `[SIMULATION] Local policy fixture evaluated; no on-chain session key was queried.`,
+    `[SIMULATION] No independent security audit or formal verification was executed by this endpoint.`,
+    `[SIMULATION] Source text accepted as demo input; arbitrary bytecode is not executed.`,
+    `[SIMULATION] No ZK proof was generated.`,
+    `[SIMULATION] Demo receipt generated locally: ${simulatedTx}`,
   ];
 
   res.json({
@@ -498,7 +495,8 @@ app.post('/api/sdk/execute', (req: Request, res: Response) => {
     outputLogs: logs,
     txHash: simulatedTx,
     gasUsedQms: 0.05,
-    status: 'Executed',
+    status: 'SIMULATED',
+    simulation: true,
   });
 });
 
@@ -519,7 +517,7 @@ async function startServer() {
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`QMoosa Nexus Global Testnet Server running on http://0.0.0.0:${PORT}`);
+    console.log(`QMoosa Nexus prototype server listening on http://0.0.0.0:${PORT}; public-network production is not claimed`);
   });
 }
 
