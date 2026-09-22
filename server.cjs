@@ -139,89 +139,88 @@ var SANCTIONED_ADDRESS_DATABASE = [
 
 // src/data/auditData.ts
 var SECURITY_AUDIT_REPORT = {
-  overallScore: 98.4,
-  auditVersion: "v2.4-Enterprise",
-  certifyingBody: "QMoosa Formal Security & CertiK/Slither Framework Standards",
-  lastAuditDate: "August 2026",
+  overallScore: null,
+  auditVersion: "repository-internal-review",
+  certifyingBody: "No independent certifying body claimed",
+  lastAuditDate: "Not independently audited",
   contractsCovered: [
-    "QMoosaToken.sol (ERC-20 + EIP-2612)",
-    "PolicyGuardian.sol (Spending Limits & Risk Enforcer)",
-    "QMoosaSmartAccount.sol (ERC-4337 Account Abstraction)",
-    "QMoosaPaymaster.sol (Gas Sponsorship & Exchange)",
-    "CrossChainRelayer.sol (ZK Proof Atomic Relayer)",
-    "qmoosa_guardian.rs (Solana Anchor Program)"
+    "QMoosaToken.sol",
+    "PolicyGuardian.sol",
+    "QMoosaSmartAccount.sol",
+    "QMoosaPaymaster.sol",
+    "CrossChainRelayer.sol"
   ],
-  summary: "Comprehensive formal verification and static analysis performed across all EVM and Solana smart contracts. Zero critical vulnerabilities found. 100% invariant satisfaction across supply hard caps, emergency pauses, and daily spending boundaries.",
+  summary: "Repository-internal security notes and invariants. This is not a CertiK audit, formal-verification certificate, external penetration test, or production security approval.",
   findings: [
     {
       id: "QMS-01",
-      title: "Supply Inflation Hard-Cap Verification",
+      title: "Supply-cap logic review",
       severity: "Informational",
-      status: "Resolved",
+      status: "Repository Reviewed",
       contract: "QMoosaToken.sol",
-      description: "Verified that total supply can never exceed MAX_SUPPLY (100 Trillion QMS) under any execution path or owner privileged call.",
-      resolution: "Strict invariant require(totalSupply + amount <= MAX_SUPPLY) enforced on both constructor and mint() functions."
+      description: "The source includes a supply-cap check. Repository review alone does not prove every privileged or upgrade path is safe.",
+      resolution: "Keep automated tests for mint/cap behavior and obtain an independent contract review before production deployment."
     },
     {
       id: "QMS-02",
-      title: "Sliding 24-Hour Spending Window Reset Logic",
+      title: "Spending-window logic",
       severity: "Low",
-      status: "Resolved",
+      status: "Needs Independent Review",
       contract: "PolicyGuardian.sol",
-      description: "Timestamp arithmetic on day boundary must handle leap seconds and block timestamp drift gracefully.",
-      resolution: "Replaced rigid day modulus with block.timestamp >= lastResetTimestamp + 1 days check with deterministic storage updates."
+      description: "Daily spending boundaries and reset behavior are security-sensitive and require adversarial testing around timestamps and authorization.",
+      resolution: "Add property/fuzz tests and independent review of time-window and policy-bypass cases."
     },
     {
       id: "QMS-03",
-      title: "Session Key Replay & Cross-Chain Protection",
+      title: "Session-key replay protection",
       severity: "Medium",
-      status: "Resolved",
+      status: "Needs Independent Review",
       contract: "QMoosaSmartAccount.sol",
-      description: "Ensure session keys executed on Sepolia cannot be replayed on Base Sepolia or Polygon Amoy.",
-      resolution: "Target Chain ID (block.chainid) and account-specific nonces are hashed into each UserOp signature payload."
+      description: "Chain/domain separation and nonce handling require deployment-specific tests to prevent replay across accounts or networks.",
+      resolution: "Add cross-chain/domain replay tests and verify the exact ERC-4337 integration used at deployment."
     },
     {
       id: "QMS-04",
-      title: "Re-entrancy Guard on External Contract Calls",
+      title: "External-call / re-entrancy surface",
       severity: "Medium",
-      status: "Resolved",
+      status: "Needs Independent Review",
       contract: "CrossChainRelayer.sol",
-      description: "External calls in atomic swap completion must follow Checks-Effects-Interactions pattern.",
-      resolution: "executedProofs[zkProofHash] is marked true before funds release or external call dispatch."
+      description: "External-call ordering, proof replay and asset-release logic require dedicated adversarial review.",
+      resolution: "Add re-entrancy, replay, malformed-proof and authorization tests before enabling value transfer."
     }
   ],
   formalInvariants: [
     {
       id: "INV-01",
-      name: "Token Hard-Cap Invariant",
-      expression: "\u2200 t \u2265 0 : TotalSupply(t) \u2264 100,000,000,000,000 * 10^18",
+      name: "Token hard-cap property",
+      expression: "TotalSupply(t) <= configured MAX_SUPPLY",
       category: "Tokenomics Hard Cap",
-      status: "Formally Proven (100%)",
-      description: "Mathematical proof that the token supply is strictly upper-bounded by 100 Trillion QMS across all valid state transitions."
+      status: "Repository Assertion",
+      description: "A desired contract property represented in source/tests. It is not described as independently formally proven."
     },
     {
       id: "INV-02",
-      name: "Spending Limit Boundedness",
-      expression: "\u2200 agent, account : SpentInWindow(agent, account) \u2264 MaxDailySpending(account)",
+      name: "Spending-limit property",
+      expression: "SpentInWindow(account) <= MaxDailySpending(account)",
       category: "Spending Policy Limits",
-      status: "Formally Proven (100%)",
-      description: "Guarantees that an AI agent cannot spend more than the configured daily allowance without triggering human multi-sig or reverting."
+      status: "Independent Proof Required",
+      description: "A desired policy invariant that requires property/fuzz testing and independent review."
     },
     {
       id: "INV-03",
-      name: "Emergency Circuit Breaker Invariant",
-      expression: "EmergencyPause(account) = true \u27F9 CanExecute(agent, account) = false",
+      name: "Emergency-pause property",
+      expression: "EmergencyPause(account) => autonomous execution denied",
       category: "Access Control",
-      status: "Formally Proven (100%)",
-      description: "Immediate deterministic halt of all autonomous agent transactions upon circuit breaker trigger."
+      status: "Independent Proof Required",
+      description: "A desired fail-closed property; repository source alone is not a proof over all execution paths."
     },
     {
       id: "INV-04",
-      name: "ZK Proof Non-Malleability",
-      expression: "\u2200 proofHash : IsExecuted(proofHash) = true \u27F9 VerifyProof(proofHash) = false",
-      category: "ZK Cryptography",
-      status: "Formally Proven (100%)",
-      description: "Double-spending and proof replay prevention across cross-chain atomic relays."
+      name: "Relayer replay-safety property",
+      expression: "accepted proof/intent cannot be reused to release value twice",
+      category: "Cross-Chain Research",
+      status: "Independent Proof Required",
+      description: "Cross-chain replay/non-malleability is a research requirement, not an independently proven guarantee."
     }
   ]
 };
