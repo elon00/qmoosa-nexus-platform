@@ -1,0 +1,227 @@
+{
+  "engine": "REA_Reverse_Engineer_Anything",
+  "status": "STRUCTURE_RECONSTRUCTED",
+  "analyzed_files": 73,
+  "manifest": {
+    "bun.lock": {
+      "bytes": 0
+    },
+    "index.html": {
+      "bytes": 324
+    },
+    "metadata.json": {
+      "bytes": 263
+    },
+    "netlify-deploy.zip": {
+      "bytes": 101771
+    },
+    "netlify.toml": {
+      "bytes": 623
+    },
+    "package-lock.json": {
+      "bytes": 158763
+    },
+    "package.json": {
+      "bytes": 1789
+    },
+    "QMOOSA_TRUTH_PROTOCOL.md": {
+      "bytes": 417
+    },
+    "README.md": {
+      "bytes": 5158
+    },
+    "REALITY_MANIFEST.json": {
+      "bytes": 1561
+    },
+    "SECURITY.md": {
+      "bytes": 1568
+    },
+    "server.ts": {
+      "bytes": 25623
+    },
+    "THE-CREATOR-GOVERNANCE.md": {
+      "bytes": 596
+    },
+    "THE_CREATOR_RULEBOOK.md": {
+      "bytes": 744
+    },
+    "tsconfig.json": {
+      "bytes": 534
+    },
+    "vite.config.ts": {
+      "bytes": 747
+    },
+    "contracts\\CrossChainRelayer.sol": {
+      "bytes": 2918
+    },
+    "contracts\\PolicyGuardian.sol": {
+      "bytes": 8320
+    },
+    "contracts\\QMoosaPaymaster.sol": {
+      "bytes": 2368
+    },
+    "contracts\\QMoosaSmartAccount.sol": {
+      "bytes": 4405
+    },
+    "contracts\\QMoosaToken.sol": {
+      "bytes": 5858
+    },
+    "public\\favicon.svg": {
+      "bytes": 924
+    },
+    "reality\\URS_EVIDENCE_CERTIFICATE.json": {
+      "bytes": 11637
+    },
+    "reality\\URS_EVIDENCE_CERTIFICATE.md": {
+      "bytes": 2416
+    },
+    "reality\\URS_SCORECARD.json": {
+      "bytes": 2496
+    },
+    "scripts\\audit-crypto.mjs": {
+      "bytes": 7810
+    },
+    "scripts\\deploy_sepolia.ts": {
+      "bytes": 1213
+    },
+    "scripts\\generate-urs-certificate.ts": {
+      "bytes": 3717
+    },
+    "scripts\\reality-universal.ts": {
+      "bytes": 7195
+    },
+    "scripts\\rea_inspector.py": {
+      "bytes": 1485
+    },
+    "scripts\\rsi_engine.py": {
+      "bytes": 2039
+    },
+    "scripts\\start-and-finish-everything.mjs": {
+      "bytes": 6379
+    },
+    "src\\App.tsx": {
+      "bytes": 8327
+    },
+    "src\\index.css": {
+      "bytes": 24
+    },
+    "src\\main.tsx": {
+      "bytes": 1127
+    },
+    "src\\types.ts": {
+      "bytes": 4049
+    },
+    "tests\\all_features.test.ts": {
+      "bytes": 6535
+    },
+    "tests\\nist-pqc.test.mjs": {
+      "bytes": 4368
+    },
+    "tests\\reality_check_harness.py": {
+      "bytes": 1250
+    },
+    "tests\\runtime-security.test.ts": {
+      "bytes": 2677
+    },
+    ".github\\workflows\\ci.yml": {
+      "bytes": 685
+    },
+    ".github\\workflows\\pages.yml": {
+      "bytes": 796
+    },
+    ".github\\workflows\\qmoosa-rsi-rea-sync.yml": {
+      "bytes": 531
+    },
+    ".github\\workflows\\security.yml": {
+      "bytes": 756
+    },
+    "contracts\\solana\\programs\\qmoosa_guardian\\src\\lib.rs": {
+      "bytes": 3845
+    },
+    "netlify\\functions\\api.cjs": {
+      "bytes": 14400
+    },
+    "src\\components\\AgentChatbot.tsx": {
+      "bytes": 10443
+    },
+    "src\\components\\AgentStudio.tsx": {
+      "bytes": 24804
+    },
+    "src\\components\\ConwayAutomaton.tsx": {
+      "bytes": 13621
+    },
+    "src\\components\\CrossChainBridge.tsx": {
+      "bytes": 7704
+    },
+    "src\\components\\DeveloperSDK.tsx": {
+      "bytes": 6624
+    },
+    "src\\components\\Explorer.tsx": {
+      "bytes": 8447
+    },
+    "src\\components\\FaucetModal.tsx": {
+      "bytes": 4898
+    },
+    "src\\components\\GenesisWhitepaper.tsx": {
+      "bytes": 8574
+    },
+    "src\\components\\GlobalCompliance.tsx": {
+      "bytes": 17430
+    },
+    "src\\components\\Header.tsx": {
+      "bytes": 10065
+    },
+    "src\\components\\JarsolStakingBeaming.tsx": {
+      "bytes": 8560
+    },
+    "src\\components\\MarketingHub.tsx": {
+      "bytes": 9283
+    },
+    "src\\components\\PQCSecurity.tsx": {
+      "bytes": 10459
+    },
+    "src\\components\\QarbiEscrowVault.tsx": {
+      "bytes": 8940
+    },
+    "src\\components\\QuantumShieldRpc.tsx": {
+      "bytes": 5311
+    },
+    "src\\components\\SecurityAudit.tsx": {
+      "bytes": 9973
+    },
+    "src\\components\\SystemHealthMatrix.tsx": {
+      "bytes": 9010
+    },
+    "src\\components\\TokenLaunchpad.tsx": {
+      "bytes": 11477
+    },
+    "src\\components\\WalletPortal.tsx": {
+      "bytes": 14763
+    },
+    "src\\components\\WorkflowBuilder.tsx": {
+      "bytes": 11127
+    },
+    "src\\data\\auditData.ts": {
+      "bytes": 4673
+    },
+    "src\\data\\complianceData.ts": {
+      "bytes": 7708
+    },
+    "src\\data\\contractsManifest.ts": {
+      "bytes": 5285
+    },
+    "src\\data\\genesis.ts": {
+      "bytes": 12332
+    },
+    "src\\server\\runtimeSecurity.ts": {
+      "bytes": 2809
+    },
+    "src\\services\\blockchainService.ts": {
+      "bytes": 7483
+    },
+    "src\\utils\\pqcCrypto.ts": {
+      "bytes": 7779
+    }
+  },
+  "timestamp": 1794023533
+}
